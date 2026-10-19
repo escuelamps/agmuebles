@@ -1,0 +1,1450 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AG MUEBLES | Mobiliario Arquitectónico a Medida & Ebanistería</title>
+  <meta name="description" content="Diseño, fabricación e instalación de mobiliario personalizado de lujo. Ebanistería contemporánea fundada por Aroldo Guerrero. 100% Hecho a medida en Colombia.">
+
+  <!-- Tipografías oficiales: Montserrat & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <link rel="icon" type="image/png" href="assets/marca-grafica-principal.png">
+
+  <!-- Tailwind CSS CDN configurado con la paleta Mara SRL / AG Muebles -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              canvas: '#E9E7E2',      /* Fondo piedra cálido característico de Mara SRL */
+              surface: '#F4F3EF',     /* Superficie clara secundaria */
+              dark: '#2C2F34',        /* Carbón oscuro oficial de AG Muebles */
+              deep: '#1C1E22',        /* Negro profundo */
+              yellow: '#F0D030',      /* Amarillo oficial AG Muebles */
+              mustard: '#E0B605',     /* Mostaza acento oficial */
+              gray: '#777A80'         /* Gris corporativo oficial */
+            }
+          },
+          fontFamily: {
+            sans: ['Montserrat', 'system-ui', '-apple-system', 'sans-serif'],
+            mono: ['JetBrains Mono', 'ui-monospace', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Reset & Base */
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: 'Montserrat', system-ui, -apple-system, sans-serif;
+      background-color: #E9E7E2;
+      color: #2C2F34;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Animación del Ticker Continuo */
+    @keyframes marquee {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-50%); }
+    }
+    .animate-marquee {
+      display: inline-flex;
+      animation: marquee 30s linear infinite;
+    }
+    .animate-marquee:hover {
+      animation-play-state: paused;
+    }
+
+    /* ==========================================================================
+    /* ==========================================================================
+       ANIMACIÓN ICÓNICA DE MARA SRL / ADORATORIO STUDIO:
+       "LA PÁGINA PEQUEÑA QUE DESPUÉS SE AGRANDA"
+       1. La web inicia compacta (scale(0.72) translateY(5vh)) enmarcada sobre fondo oscuro arquitectónico (#1A1D20),
+          con esquinas redondeadas (28px), borde fino y sombra tridimensional flotante de maqueta.
+       2. Tras un momento donde se aprecia claramente la miniatura, se agranda y expande
+          suavemente a pantalla completa (scale(1)), disolviendo el marco e integrándose al 100% de la ventana.
+       3. Todo el interior de la web es de UN SOLO TONO DE FONDO (#E9E7E2).
+       ========================================================================== */
+    .page-scale-stage {
+      background-color: #F0D030; /* El mismo amarillo identitario del manual de marca */
+      min-height: 100vh;
+      width: 100%;
+      overflow-x: hidden;
+      padding: 0;
+      margin: 0;
+      transition: background-color 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.6s;
+    }
+
+    .page-scale-stage.stage-expanded {
+      background-color: #E9E7E2;
+    }
+
+    .page-scale-frame {
+      width: 100%;
+      min-height: 100vh;
+      transform-origin: center top;
+      transform: scale(0.72) translateY(5vh);
+      border-radius: 28px;
+      box-shadow: 0 45px 130px -15px rgba(44, 47, 52, 0.45), 0 0 0 1px rgba(44, 47, 52, 0.15);
+      overflow: hidden;
+      background-color: #E9E7E2;
+      transition: transform 1.8s cubic-bezier(0.16, 1, 0.3, 1), 
+                  border-radius 1.8s cubic-bezier(0.16, 1, 0.3, 1), 
+                  box-shadow 1.8s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform, border-radius;
+    }
+
+    .page-scale-frame.expanded {
+      transform: scale(1) translateY(0);
+      border-radius: 0px;
+      box-shadow: none;
+    }
+
+    /* Revelación del Encabezado */
+    .header-reveal {
+      transform: translateY(-100%);
+      transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .page-entered .header-reveal {
+      transform: translateY(0%);
+    }
+
+    /* Revelación de Texto desde Máscara (Overflow Mask Reveal) */
+    .mask-reveal {
+      overflow: hidden;
+      display: inline-block;
+      vertical-align: bottom;
+    }
+    .mask-reveal-inner {
+      display: inline-block;
+      transform: translateY(110%);
+      transition: transform 1.1s cubic-bezier(0.215, 0.61, 0.355, 1);
+    }
+    .page-entered .mask-reveal-inner {
+      transform: translateY(0%);
+    }
+
+    /* Zoom de entrada en imágenes */
+    .hero-img-zoom {
+      transform: scale(1.18);
+      transition: transform 2s cubic-bezier(0.215, 0.61, 0.355, 1);
+    }
+    .page-entered .hero-img-zoom {
+      transform: scale(1);
+    }
+
+    /* Animación de Despliegue Suave en Scroll */
+    .scroll-reveal {
+      opacity: 0;
+      transform: translateY(35px);
+      transition: opacity 0.85s cubic-bezier(0.215, 0.61, 0.355, 1), transform 0.85s cubic-bezier(0.215, 0.61, 0.355, 1);
+      will-change: opacity, transform;
+    }
+    .scroll-reveal.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Drawer Animation */
+    @keyframes slideLeft {
+      from { transform: translateX(100%); }
+      to { transform: translateX(0); }
+    }
+    .animate-slideLeft {
+      animation: slideLeft 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .animate-fadeIn {
+      animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+  </style>
+
+  <!-- React 18, ReactDOM y Babel Standalone -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- APLICACIÓN REACT NATIVA -->
+  <script type="text/babel">
+    const { useState, useEffect, useRef } = React;
+
+    // --- CATÁLOGO DE SISTEMAS ARQUITECTÓNICOS (100% EN ESPAÑOL) ---
+    const architecturalProducts = [
+      {
+        code: 'SIS-01',
+        refNumber: '01 / 06',
+        name: 'Sistema de Cocina Monolith',
+        typology: 'Cocina de Autor con Despensa Continua',
+        designer: 'Taller Aroldo Guerrero',
+        year: '2026',
+        shortDesc: 'Diseño arquitectónico monolítico. Frentes continuos sin tirador con junta a 45 grados, isla central en piedra sinterizada y torres técnicas con electrodomésticos embutidos a ras.',
+        dimensions: 'Largo: 3.20m – 4.80m × Ancho: 0.95m × Altura: 0.92m / 2.40m',
+        materials: ['Roble Americano Macizo', 'Cuarzo Calacatta Gold', 'Laca Carbón #2C2F34', 'Herrajes Alemanes Blumotion'],
+        leadTime: '4 a 6 semanas',
+        primaryImage: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1400&q=85',
+        secondaryImage: 'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1400&q=85',
+        blueprintDesc: 'Cuerpo modular en tablero marino hidrófugo de 19 mm con canteado láser térmico. Perfiles gola de aluminio anodizado en negro carbón.',
+        specs: [
+          { label: 'Estructura Modular', value: 'Tablero marino hidrófugo 19mm antimanchas' },
+          { label: 'Cubierta de Isla', value: 'Piedra sinterizada 12mm ingletada a 50mm' },
+          { label: 'Correderas', value: 'Blum Legrabox extracción total con freno' },
+          { label: 'Iluminación', value: 'Canal LED difuso 2700K cálido integrado' }
+        ]
+      },
+      {
+        code: 'SIS-02',
+        refNumber: '02 / 06',
+        name: 'Panel Mural & Mueble TV Kanso',
+        typology: 'Sistema Suspendido & Panel Acústico',
+        designer: 'Taller Aroldo Guerrero',
+        year: '2026',
+        shortDesc: 'Revestimiento mural en listones de madera noble con amortiguación acústica y consola horizontal flotante con anclaje invisible de alta resistencia.',
+        dimensions: 'Largo: 2.40m – 3.60m × Profundidad: 0.45m × Altura: 2.60m',
+        materials: ['Nogal Canaletto', 'Panel Acústico Fonoabsorbente', 'Acero Lacado Mate', 'Cantos a Inglete'],
+        leadTime: '3 a 4 semanas',
+        primaryImage: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1400&q=85',
+        secondaryImage: 'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1400&q=85',
+        blueprintDesc: 'Listonería de 28×28 mm montada sobre fieltro textil fonoabsorbente. Soporte de fijación micrométrico con regulación en 3 ejes.',
+        specs: [
+          { label: 'Revestimiento', value: 'Listones macizos en nogal barniz ecológico mate' },
+          { label: 'Capacidad de Carga', value: 'Hasta 95 kg verificados sobre muro portante' },
+          { label: 'Paso de Cables', value: 'Conducto técnico magnético totalmente oculto' },
+          { label: 'Apertura', value: 'Sistema Push-to-Open con expulsión silenciosa' }
+        ]
+      },
+      {
+        code: 'SIS-03',
+        refNumber: '03 / 06',
+        name: 'Vestidor Walk-In Lumina',
+        typology: 'Armario Arquitectónico & Vitrinas Fumé',
+        designer: 'Taller Aroldo Guerrero',
+        year: '2026',
+        shortDesc: 'Vestidor estructural abierto en perfilería de aluminio negro carbón mate, puertas en vidrio templado fumé e isla central para accesorios.',
+        dimensions: 'Módulos a medida por tramos de 60, 80, 100 y 120 cm',
+        materials: ['Vidrio Templado Fumé 8mm', 'Aluminio Anodizado Carbón', 'Roble Tinte Negro', 'Gamuza de Protección'],
+        leadTime: '4 a 5 semanas',
+        primaryImage: 'https://images.unsplash.com/photo-1616046229478-9901c5536a45?auto=format&fit=crop&w=1400&q=85',
+        secondaryImage: 'https://images.unsplash.com/photo-1558997519-83ea9252def8?auto=format&fit=crop&w=1400&q=85',
+        blueprintDesc: 'Montantes de aluminio estructural anclados de piso a cielo raso. Bisagras embutidas sin tornillos visibles.',
+        specs: [
+          { label: 'Perfilería Metálica', value: 'Aleación 6063 microtexturada en negro mate' },
+          { label: 'Cristales', value: 'Vidrio templado reflectivo de 8 mm con bisel' },
+          { label: 'Isla de Accesorios', value: 'Gavetas compartimentadas forradas en gamuza' },
+          { label: 'Sensores', value: 'Encendido automático por proximidad magnética' }
+        ]
+      },
+      {
+        code: 'SIS-04',
+        refNumber: '04 / 06',
+        name: 'Mesa Escultórica Kyoto',
+        typology: 'Mesa de Reunión & Comedor Principal',
+        designer: 'Taller Aroldo Guerrero',
+        year: '2026',
+        shortDesc: 'Mesa con doble pedestal escultórico estriado. Tapa maciza en chapa gruesa de roble con cantos suavemente redondeados en alas de gaviota.',
+        dimensions: 'Largo: 2.40m – 3.20m × Ancho: 1.10m × Alto: 0.75m',
+        materials: ['Roble Americano Seleccionado', 'Refuerzos en Acero', 'Laca Mate Antihuella'],
+        leadTime: '3 a 4 semanas',
+        primaryImage: 'https://images.unsplash.com/photo-1617806118233-18e1de247200?auto=format&fit=crop&w=1400&q=85',
+        secondaryImage: 'https://images.unsplash.com/photo-1530018607912-eff2daa1bac4?auto=format&fit=crop&w=1400&q=85',
+        blueprintDesc: 'Bases cilíndricas torneadas con estructura interior de rigidización metálica. Sobre desmontable con uniones calibradas.',
+        specs: [
+          { label: 'Espesor de Cubierta', value: '42 mm con canto biselado aerodinámico' },
+          { label: 'Tratamiento Superficial', value: 'Acabado acrílico al agua 5 gloss poro abierto' },
+          { label: 'Capacidad', value: '8 a 12 comensales según largo elegido' },
+          { label: 'Mantenimiento', value: 'Tratamiento hidrófugo y anti-manchas' }
+        ]
+      },
+      {
+        code: 'SIS-05',
+        refNumber: '05 / 06',
+        name: 'Aparador Ranurado Sabi',
+        typology: 'Aparador Bajo de Almacenamiento',
+        designer: 'Taller Aroldo Guerrero',
+        year: '2026',
+        shortDesc: 'Mueble bajo de 4 módulos con ranurado vertical continuo. Cubierta encastrada en piedra natural pulida y patas aéreas nivelables.',
+        dimensions: 'Largo: 2.00m × Fondo: 0.48m × Alto: 0.78m',
+        materials: ['Nogal Macizo', 'Mármol Negro Marquina', 'Base en Acero Calibrado'],
+        leadTime: '3 a 4 semanas',
+        primaryImage: 'https://images.unsplash.com/photo-1595428774223-ef52624120d2?auto=format&fit=crop&w=1400&q=85',
+        secondaryImage: 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1400&q=85',
+        blueprintDesc: 'Frentes fresados en centro de mecanizado CNC de 5 ejes con veta continua a lo largo de las cuatro puertas.',
+        specs: [
+          { label: 'Herrajes Ocultos', value: 'Bisagras invisibles regulables con freno suave' },
+          { label: 'Almacenamiento', value: '4 cavidades con repisas ajustables en 3 alturas' },
+          { label: 'Estructura Inferior', value: 'Tubo de acero 20×20 mm acabado pintura electrostática' },
+          { label: 'Tapa Superior', value: 'Mármol pulido 20 mm con sellador hidrorrepelente' }
+        ]
+      },
+      {
+        code: 'SIS-06',
+        refNumber: '06 / 06',
+        name: 'Librero Estructural Studio 360',
+        typology: 'Librería Integral de Suelo a Techo',
+        designer: 'Taller Aroldo Guerrero',
+        year: '2026',
+        shortDesc: 'Sistema reticular a medida de suelo a techo. Módulos ciegos inferiores con gavetas, nichos asimétricos e integración de escritorio flotante.',
+        dimensions: 'Altura hasta 3.60m × Desarrollo lineal ilimitado',
+        materials: ['Roble Seleccionado', 'Laca Carbón #2C2F34', 'Acentos Amarillo AG #F0D030'],
+        leadTime: '4 a 6 semanas',
+        primaryImage: 'https://images.unsplash.com/photo-1544457070-4cd773b4d71e?auto=format&fit=crop&w=1400&q=85',
+        secondaryImage: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1400&q=85',
+        blueprintDesc: 'Estructura autoportante ajustada a presión contra el techo mediante gatos mecánicos ocultos en la cornisa.',
+        specs: [
+          { label: 'Modularidad', value: 'Huecos variables de 30 a 90 cm de luz' },
+          { label: 'Tomas Eléctricas', value: 'Puntos USB-C y tomas Schuko ocultas' },
+          { label: 'Iluminación', value: 'Difusores de policarbonato a ras de balda' },
+          { label: 'Garantía Estructural', value: '10 años en estabilidad dimensional' }
+        ]
+      }
+    ];
+
+    const materialsData = [
+      { code: 'MAT-01', name: 'Roble Americano Natural', origin: 'Bosques Certificados Sostenibles', finish: 'Barniz al agua mate 5 gloss / Poro abierto', image: 'https://images.unsplash.com/photo-1546484475-7f7bd55792da?auto=format&fit=crop&w=600&q=80', tone: 'Cálido Claro' },
+      { code: 'MAT-02', name: 'Nogal Canaletto Oscuro', origin: 'Chapa Fina Seleccionada', finish: 'Tratamiento al aceite natural sedoso', image: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=600&q=80', tone: 'Marrón Profundo' },
+      { code: 'MAT-03', name: 'Laca Carbón Mate #2C2F34', origin: 'Fórmula Exclusiva AG Muebles', finish: 'Poliuretano texturizado mate de alta dureza', image: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=600&q=80', tone: 'Negro Carbón Oficial' },
+      { code: 'MAT-04', name: 'Piedra Sinterizada Calacatta', origin: 'Cerámica Ultracompacta de Alta Presión', finish: 'Superficie satinada antihuella y antimanchas', image: 'https://images.unsplash.com/photo-1590736969955-71cc94801759?auto=format&fit=crop&w=600&q=80', tone: 'Blanco Cálido con Veta Ocre' },
+      { code: 'MAT-05', name: 'Laca Solar AG #F0D030', origin: 'Color Identitario del Manual de Marca', finish: 'Acento geométrico en nichos y tiradores', image: 'https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=600&q=80', tone: 'Amarillo Brillante / Energía' },
+      { code: 'MAT-06', name: 'Cristal Templado Fumé', origin: 'Vidrio de Seguridad Arquitectónico', finish: 'Biselado a inglete con perfiles de aluminio', image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=600&q=80', tone: 'Gris Grafito Traslúcido' }
+    ];
+
+    function App() {
+      // Estado de navegación y vistas
+      const [viewMode, setViewMode] = useState('gallery'); // 'gallery' | 'index'
+      const [isNavOpen, setIsNavOpen] = useState(false);
+      const [selectedProduct, setSelectedProduct] = useState(null);
+      const [isInquiryOpen, setIsInquiryOpen] = useState(false);
+      const [navHoverImage, setNavHoverImage] = useState(architecturalProducts[0].primaryImage);
+      const [lightboxImage, setLightboxImage] = useState(null);
+
+      // Cierre con la tecla Escape para lightbox, ficha técnica o modal
+      useEffect(() => {
+        const handleKeyDown = (e) => {
+          if (e.key === 'Escape') {
+            if (lightboxImage) setLightboxImage(null);
+            else if (selectedProduct) setSelectedProduct(null);
+            else if (isInquiryOpen) setIsInquiryOpen(false);
+            else if (isNavOpen) setIsNavOpen(false);
+          }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+      }, [lightboxImage, selectedProduct, isInquiryOpen, isNavOpen]);
+
+      // 1. ANIMACIÓN ICÓNICA: PRIMERO EL LOGO SOBRE AMARILLO Y DESPUÉS LA PÁGINA QUE SE AGRANDA
+      const [showLogoIntro, setShowLogoIntro] = useState(true);
+      const [isPageExpanded, setIsPageExpanded] = useState(false);
+
+      const playEntrance = () => {
+        setShowLogoIntro(true);
+        setIsPageExpanded(false);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        // Paso 1: Se muestra primero el logo en amarillo por 1100ms
+        setTimeout(() => {
+          setShowLogoIntro(false);
+        }, 1100);
+
+        // Paso 2: A los 1600ms, la página pequeña sobre el amarillo se agranda a pantalla completa
+        setTimeout(() => {
+          setIsPageExpanded(true);
+        }, 1600);
+      };
+
+      useEffect(() => {
+        // Al ingresar a la web: primero el logo en amarillo (#F0D030), luego la página
+        const t1 = setTimeout(() => {
+          setShowLogoIntro(false);
+        }, 1100);
+
+        const t2 = setTimeout(() => {
+          setIsPageExpanded(true);
+        }, 1600);
+
+        return () => {
+          clearTimeout(t1);
+          clearTimeout(t2);
+        };
+      }, []);
+
+      // 2. ANIMACIÓN EN SCROLL (IntersectionObserver para reveals suaves)
+      useEffect(() => {
+        if (!isPageExpanded) return;
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('revealed');
+            }
+          });
+        }, { threshold: 0.15 });
+
+        document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+        return () => observer.disconnect();
+      }, [isPageExpanded, viewMode]);
+
+      const navItems = [
+        { num: '01', title: 'Sistemas y Espacios', target: 'sistemas', img: architecturalProducts[0].primaryImage },
+        { num: '02', title: 'Índice de Mobiliario', target: 'index-view', img: architecturalProducts[1].primaryImage },
+        { num: '03', title: 'Archivo de Materiales', target: 'materiales', img: materialsData[0].image },
+        { num: '04', title: 'El Taller & Ebanistería', target: 'taller', img: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80' },
+        { num: '05', title: 'Solicitar Asesoría 3D', target: 'inquiry', img: architecturalProducts[2].primaryImage }
+      ];
+
+      const scrollTo = (id) => {
+        if (id === 'index-view') {
+          setViewMode('index');
+          document.getElementById('sistemas')?.scrollIntoView({ behavior: 'smooth' });
+        } else if (id === 'inquiry') {
+          setIsInquiryOpen(true);
+        } else {
+          document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+        }
+      };
+
+      return (
+        <div className={`page-scale-stage ${isPageExpanded ? 'stage-expanded' : ''} min-h-screen selection:bg-[#F0D030] selection:text-[#2C2F34]`}>
+          
+          {/* PANTALLA INICIAL: CARGA PRIMERO LA MARCA GRÁFICA PRINCIPAL SOBRE EL AMARILLO OFICIAL (#F0D030) */}
+          <div 
+            className={`fixed inset-0 z-50 bg-[#F0D030] flex flex-col items-center justify-center p-6 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] select-none ${
+              showLogoIntro ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none scale-105'
+            }`}
+          >
+            <div className="flex flex-col items-center text-center animate-fadeIn">
+              <div className="bg-white/95 backdrop-blur-md px-10 sm:px-12 py-7 sm:py-8 rounded-3xl shadow-2xl border border-black/5 transform hover:scale-105 transition-transform duration-500">
+                <img 
+                  src="assets/marca-grafica-principal.png" 
+                  alt="AG MUEBLES - Marca Gráfica Principal" 
+                  className="h-28 sm:h-36 w-auto object-contain filter drop-shadow-sm" 
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* MARCO ARQUITECTÓNICO: LA PÁGINA PEQUEÑA QUE SE AGRANDA A PANTALLA COMPLETA */}
+          <div className={`page-scale-frame ${isPageExpanded ? 'expanded page-entered' : ''} min-h-screen bg-[#E9E7E2] text-[#2C2F34]`}>
+
+          {/* ==========================================================================
+              1. TICKER CONTINUO EN LA CABECERA (MARQUEE EN ESPAÑOL)
+             ========================================================================== */}
+          <div className="bg-[#2C2F34] text-[#E9E7E2] py-2.5 px-4 overflow-hidden border-b border-[#3E4249] select-none text-[11px] font-mono tracking-widest uppercase marquee-reveal">
+            <div className="flex whitespace-nowrap animate-marquee items-center gap-8">
+              {[1, 2, 3].map(loop => (
+                <span key={loop} className="flex items-center gap-8">
+                  <span>AG MUEBLES</span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#F0D030]"></span>
+                  <span>MOBILIARIO ARQUITECTÓNICO A MEDIDA</span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#F0D030]"></span>
+                  <span>TALLER AROLDO GUERRERO</span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#F0D030]"></span>
+                  <span>EBANISTERÍA DE ALTA PRECISIÓN</span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#F0D030]"></span>
+                  <span>10 AÑOS DE GARANTÍA ESTRUCTURAL</span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#F0D030]"></span>
+                  <span>COBERTURA EN TODA COLOMBIA</span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#F0D030]"></span>
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* ==========================================================================
+              2. ENCABEZADO FIJO EN 3 COLUMNAS (ESTILO MARA SRL)
+             ========================================================================== */}
+          <header className="sticky top-0 z-40 bg-[#E9E7E2]/95 backdrop-blur-md border-b border-[#2C2F34]/15 transition-all header-reveal">
+            <div className="container mx-auto px-4 sm:px-8 h-20 flex items-center justify-between">
+              
+              {/* Izquierda: Disparador del Menú Overlay */}
+              <button
+                onClick={() => setIsNavOpen(true)}
+                className="group flex items-center gap-2.5 text-xs font-mono uppercase tracking-widest text-[#2C2F34] py-2"
+              >
+                <span className="w-6 h-6 rounded-full border border-[#2C2F34] flex items-center justify-center text-xs group-hover:bg-[#2C2F34] group-hover:text-white transition-all">
+                  +
+                </span>
+                <span className="font-bold underline-offset-4 group-hover:underline">Menú</span>
+              </button>
+
+              {/* Centro: Logotipo Oficial AG MUEBLES (Marca Gráfica Principal) */}
+              <a href="#" className="flex items-center">
+                <img src="assets/marca-grafica-principal.png" alt="AG MUEBLES" className="h-10 sm:h-12 w-auto object-contain" />
+              </a>
+
+              {/* Derecha: Conmutador de Vista (Galería / Tabla Técnica), Rebobinar Animación y Cotizar */}
+              <div className="flex items-center gap-2.5 sm:gap-4">
+                <button
+                  onClick={playEntrance}
+                  className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#2C2F34]/25 hover:border-[#2C2F34] text-[10px] font-mono uppercase tracking-wider text-[#2C2F34] transition-all bg-white/40 hover:bg-white"
+                  title="Volver a reproducir la animación de inicio con logo y expansión"
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#E0B605] animate-ping"></span>
+                  <span>Animación Inicial</span>
+                </button>
+
+                <div className="hidden md:flex items-center border border-[#2C2F34]/25 rounded-full p-1 text-[11px] font-mono uppercase tracking-wider bg-white/40">
+                  <button
+                    onClick={() => {
+                      setViewMode('gallery');
+                      document.getElementById('sistemas')?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                    className={`px-3 py-1 rounded-full transition-all ${
+                      viewMode === 'gallery' ? 'bg-[#2C2F34] text-white font-bold' : 'text-gray-600 hover:text-black'
+                    }`}
+                  >
+                    Galería
+                  </button>
+                  <button
+                    onClick={() => {
+                      setViewMode('index');
+                      document.getElementById('sistemas')?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                    className={`px-3 py-1 rounded-full transition-all ${
+                      viewMode === 'index' ? 'bg-[#2C2F34] text-white font-bold' : 'text-gray-600 hover:text-black'
+                    }`}
+                  >
+                    Tabla Técnica
+                  </button>
+                </div>
+
+                <button
+                  onClick={() => setIsInquiryOpen(true)}
+                  className="bg-[#2C2F34] hover:bg-black text-[#F0D030] text-xs font-mono uppercase tracking-wider px-4 py-2.5 rounded-full transition-all shadow-sm"
+                >
+                  Cotizar
+                </button>
+              </div>
+
+            </div>
+          </header>
+
+          {/* ==========================================================================
+              3. NAVEGADOR A PANTALLA COMPLETA CON PREVIEW HOVER (FULL-SCREEN OVERLAY)
+             ========================================================================== */}
+          {isNavOpen && (
+            <div className="fixed inset-0 z-50 bg-[#2C2F34] text-[#E9E7E2] flex flex-col justify-between p-6 sm:p-12 overflow-y-auto animate-fadeIn">
+              <div className="flex items-center justify-between border-b border-white/10 pb-6">
+                <div className="flex items-center gap-3">
+                  <img src="assets/logo-dark.png" alt="AG MUEBLES" className="h-8 sm:h-10 w-auto" />
+                  <span className="text-xs font-mono uppercase tracking-widest text-gray-400 hidden sm:inline">
+                    // Navegación Arquitectónica
+                  </span>
+                </div>
+                <button
+                  onClick={() => setIsNavOpen(false)}
+                  className="group flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-[#E9E7E2] hover:text-[#F0D030]"
+                >
+                  <span className="w-7 h-7 rounded-full border border-white/20 flex items-center justify-center group-hover:border-[#F0D030]">
+                    &times;
+                  </span>
+                  <span>Cerrar</span>
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 my-auto py-10 items-center">
+                <div className="lg:col-span-7 space-y-4 sm:space-y-6">
+                  {navItems.map(item => (
+                    <div
+                      key={item.num}
+                      onMouseEnter={() => setNavHoverImage(item.img)}
+                      onClick={() => {
+                        scrollTo(item.target);
+                        setIsNavOpen(false);
+                      }}
+                      className="group cursor-pointer flex items-baseline gap-4 sm:gap-6 border-b border-white/5 pb-3 transition-colors"
+                    >
+                      <span className="text-xs sm:text-sm font-mono text-[#F0D030] tracking-wider">
+                        {item.num}
+                      </span>
+                      <div className="flex-1">
+                        <h3 className="text-3xl sm:text-5xl lg:text-6xl font-light tracking-tight uppercase group-hover:text-[#F0D030] group-hover:translate-x-2 transition-all">
+                          {item.title}
+                        </h3>
+                      </div>
+                      <span className="text-xl text-gray-500 group-hover:text-[#F0D030] transition-colors">
+                        &rarr;
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="hidden lg:block lg:col-span-5 pl-8">
+                  <div className="aspect-[4/5] rounded-2xl overflow-hidden bg-black/40 border border-white/10 relative shadow-2xl">
+                    <img 
+                      src={navHoverImage} 
+                      alt="Vista previa" 
+                      className="w-full h-full object-cover transition-all duration-700 filter brightness-90"
+                    />
+                    <div className="absolute bottom-4 left-4 right-4 bg-black/60 backdrop-blur-md p-3 rounded-xl border border-white/10 text-xs font-mono">
+                      <span className="text-[#F0D030] block">TALLER AG &bull; ARCHIVO</span>
+                      <span className="text-gray-300">Bogotá &bull; Fabricación 100% a Medida</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs font-mono text-gray-400 gap-4">
+                <span>FUNDADO EN 2026 &bull; SISTEMAS ARQUITECTÓNICOS AROLDO GUERRERO</span>
+                <div className="flex items-center gap-6">
+                  <a href="https://instagram.com/ag.muebles.diseno" target="_blank" className="hover:text-[#F0D030]">
+                    Instagram: @ag.muebles.diseno
+                  </a>
+                  <span>|</span>
+                  <a href="tel:+573000000000" className="hover:text-[#F0D030]">
+                    +57 300 000 0000
+                  </a>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* ==========================================================================
+              4. HERO EDITORIAL CON REVELACIÓN TIPOGRÁFICA Y ZOOM
+             ========================================================================== */}
+          <section className="bg-[#E9E7E2] text-[#2C2F34] pt-8 pb-20 border-b border-[#2C2F34]/15">
+            <div className="container mx-auto px-4 sm:px-8">
+              
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-[#2C2F34]/15 pb-4 mb-10 text-xs font-mono uppercase tracking-widest text-gray-600 gap-2">
+                <div className="flex items-center gap-3">
+                  <span className="w-2 h-2 rounded-full bg-[#E0B605]"></span>
+                  <span>AG MUEBLES // PRODUCCIÓN ARQUITECTÓNICA A MEDIDA</span>
+                </div>
+                <div className="flex items-center gap-6">
+                  <span>COLECCIÓN 2026</span>
+                  <span>BOGOTÁ, COLOMBIA</span>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
+                <div className="lg:col-span-7 flex flex-col justify-between">
+                  <div>
+                    <span className="inline-block text-xs font-mono uppercase tracking-widest bg-[#2C2F34] text-[#F0D030] px-3 py-1 rounded-sm mb-6">
+                      [ 01 // MANIFIESTO ]
+                    </span>
+
+                    {/* Titular con Máscaras de Despliegue Tipográfico (Ajustado para no recortar) */}
+                    <h1 className="text-[clamp(2rem,4.3vw,4.25rem)] font-bold tracking-tight uppercase leading-[0.95] mb-8 text-[#2C2F34]">
+                      <span className="mask-reveal block max-w-full">
+                        <span className="mask-reveal-inner inline-block pr-1">TRANSFORMAMOS</span>
+                      </span>
+                      <span className="mask-reveal block mt-1.5 max-w-full">
+                        <span className="mask-reveal-inner inline-block pr-1 text-[#2C2F34] font-black border-b-4 border-[#F0D030]">
+                          TUS ESPACIOS.
+                        </span>
+                      </span>
+                    </h1>
+
+                    <p className="text-base sm:text-lg text-[#2C2F34]/80 leading-relaxed font-normal max-w-xl mb-8">
+                      Diseño, fabricación e ingeniería de mobiliario a medida de alta gama. Una práctica fundada en la precisión de la ebanistería tradicional, procesos de control numérico CNC y acabados nobles para residencias y espacios corporativos.
+                    </p>
+                  </div>
+
+                  <div className="pt-6 border-t border-[#2C2F34]/15 space-y-6">
+                    <div className="grid grid-cols-2 gap-4 text-xs font-mono uppercase text-gray-600">
+                      <div>
+                        <span className="block text-gray-400">Fundador & Dirección:</span>
+                        <strong className="text-[#2C2F34]">Aroldo Guerrero</strong>
+                      </div>
+                      <div>
+                        <span className="block text-gray-400">Garantía:</span>
+                        <strong className="text-[#2C2F34]">10 Años Estructural</strong>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-wrap gap-4 pt-2">
+                      <button
+                        onClick={() => document.getElementById('sistemas')?.scrollIntoView({ behavior: 'smooth' })}
+                        className="bg-[#2C2F34] hover:bg-black text-[#F0D030] text-xs font-mono uppercase tracking-widest px-7 py-3.5 rounded-full transition-all flex items-center gap-3 shadow-sm hover:scale-105"
+                      >
+                        <span>Explorar Sistemas</span>
+                        <span>&darr;</span>
+                      </button>
+
+                      <button
+                        onClick={() => setIsInquiryOpen(true)}
+                        className="border border-[#2C2F34] hover:bg-[#2C2F34] hover:text-white text-[#2C2F34] text-xs font-mono uppercase tracking-widest px-7 py-3.5 rounded-full transition-all hover:scale-105"
+                      >
+                        Agendar Proyecto 3D
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Hero Image con animación de zoom inverso y apertura en pantalla completa */}
+                <div className="lg:col-span-5">
+                  <div 
+                    onClick={() => setLightboxImage({
+                      url: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=85',
+                      title: 'Cocina Arquitectónica Monolith',
+                      subtitle: 'Roble Americano &bull; Piedra Sinterizada &bull; Blumotion',
+                      code: 'SIS-01'
+                    })}
+                    className="group relative rounded-2xl overflow-hidden border border-[#2C2F34]/20 shadow-xl bg-[#E9E7E2] cursor-zoom-in"
+                    title="Click para ver en pantalla completa"
+                  >
+                    <img 
+                      src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=85" 
+                      alt="Sistema de Cocina Monolith - AG Muebles"
+                      className="w-full aspect-[4/3] object-cover filter contrast-[1.03] hero-img-zoom group-hover:scale-105 transition-transform duration-700"
+                    />
+                    <div className="absolute top-4 left-4 bg-[#2C2F34]/90 backdrop-blur-md text-white text-[10px] font-mono px-3 py-1.5 rounded-sm uppercase tracking-wider">
+                      FIG. 01 &bull; COCINA ARQUITECTÓNICA MONOLITH
+                    </div>
+                    <div className="absolute bottom-4 right-4 bg-[#2C2F34]/90 backdrop-blur-md text-[#F0D030] text-[10px] font-mono px-3 py-1.5 rounded-full uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity">
+                      🔍 Ampliar Foto
+                    </div>
+                  </div>
+
+                  <div className="flex justify-between items-center text-xs font-mono uppercase text-gray-500 mt-3 px-1">
+                    <span>Roble Americano &bull; Piedra Sinterizada &bull; Blumotion</span>
+                    <span>Ref: SIS-01</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </section>
+
+          {/* ==========================================================================
+              5. SECCIÓN DE SISTEMAS (CONMUTADOR GALERÍA vs. TABLA TÉCNICA)
+             ========================================================================== */}
+          <section id="sistemas" className="py-20 sm:py-28 bg-[#E9E7E2] border-b border-[#2C2F34]/15">
+            <div className="container mx-auto px-4 sm:px-8">
+              
+              <div className="flex flex-col sm:flex-row sm:items-end justify-between border-b border-[#2C2F34]/15 pb-6 mb-16 gap-4 scroll-reveal">
+                <div>
+                  <span className="text-xs font-mono uppercase tracking-widest text-[#E0B605] block mb-1">
+                    [ 02 // ARCHIVO DE SISTEMAS ]
+                  </span>
+                  <h2 className="text-3xl sm:text-5xl font-bold uppercase tracking-tight text-[#2C2F34]">
+                    Colección de Mobiliario Arquitectónico
+                  </h2>
+                </div>
+
+                {/* Controles de Vista */}
+                <div className="flex items-center gap-3">
+                  <span className="text-xs font-mono uppercase text-gray-500 hidden sm:inline">Modo de Vista:</span>
+                  <div className="flex items-center border border-[#2C2F34]/30 rounded-full p-1 text-xs font-mono uppercase bg-white/60">
+                    <button
+                      onClick={() => setViewMode('gallery')}
+                      className={`px-4 py-1.5 rounded-full transition-all ${
+                        viewMode === 'gallery' ? 'bg-[#2C2F34] text-[#F0D030] font-bold shadow-sm' : 'text-gray-600 hover:text-black'
+                      }`}
+                    >
+                      Galería Editorial
+                    </button>
+                    <button
+                      onClick={() => setViewMode('index')}
+                      className={`px-4 py-1.5 rounded-full transition-all ${
+                        viewMode === 'index' ? 'bg-[#2C2F34] text-[#F0D030] font-bold shadow-sm' : 'text-gray-600 hover:text-black'
+                      }`}
+                    >
+                      Tabla Técnica
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* RENDERIZADO SEGÚN VISTA SELECCIONADA */}
+              {viewMode === 'gallery' ? (
+                /* VISTA GALERÍA CON TARJETAS EDITORIALES ANIMADAS EN SCROLL */
+                <div className="space-y-16 sm:space-y-24">
+                  {architecturalProducts.map((item, index) => {
+                    const isReversed = index % 2 === 1;
+
+                    return (
+                      <article key={item.code} className="border-b border-[#2C2F34]/15 pb-16 sm:pb-24 scroll-reveal">
+                        <div className="flex items-center justify-between text-xs font-mono uppercase tracking-widest text-gray-500 mb-6">
+                          <span className="text-[#2C2F34] font-bold">[ {item.refNumber} ]</span>
+                          <span>{item.typology}</span>
+                          <span className="hidden sm:inline text-gray-400">REF: {item.code}</span>
+                        </div>
+
+                        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+                          <div className={`lg:col-span-7 ${isReversed ? 'lg:order-2' : 'lg:order-1'}`}>
+                            <div 
+                              onClick={() => setSelectedProduct(item)}
+                              className="group relative cursor-pointer overflow-hidden rounded-xl border border-[#2C2F34]/20 bg-gray-200 aspect-[16/10]"
+                            >
+                              <img src={item.primaryImage} alt={item.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                              <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors"></div>
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setLightboxImage({
+                                    url: item.primaryImage,
+                                    title: item.name,
+                                    subtitle: `${item.typology} &bull; ${item.year} &bull; Ref: ${item.code}`,
+                                    code: item.code
+                                  });
+                                }}
+                                title="Ver fotografía en pantalla completa"
+                                className="absolute top-4 right-4 bg-[#2C2F34]/85 hover:bg-[#2C2F34] text-[#F0D030] text-xs font-mono px-3 py-1.5 rounded-full flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity shadow-md z-10"
+                              >
+                                <span>🔍</span>
+                                <span>Ampliar</span>
+                              </button>
+                              <div className="absolute bottom-4 right-4 bg-[#2C2F34]/95 text-[#F0D030] text-xs font-mono uppercase tracking-wider px-3.5 py-1.5 rounded-sm opacity-0 group-hover:opacity-100 transition-opacity">
+                                + Abrir Ficha Técnica
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className={`lg:col-span-5 ${isReversed ? 'lg:order-1' : 'lg:order-2'} space-y-6`}>
+                            <div>
+                              <span className="text-xs font-mono text-[#E0B605] uppercase tracking-wider block mb-1">
+                                {item.designer} &bull; {item.year}
+                              </span>
+                              <h3 
+                                onClick={() => setSelectedProduct(item)}
+                                className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight uppercase text-[#2C2F34] cursor-pointer hover:text-black leading-tight"
+                              >
+                                {item.name}
+                              </h3>
+                            </div>
+
+                            <p className="text-sm text-[#2C2F34]/80 leading-relaxed font-normal">
+                              {item.shortDesc}
+                            </p>
+
+                            <div className="bg-[#E9E7E2]/70 border border-[#2C2F34]/15 rounded-xl p-4 text-xs font-mono space-y-2">
+                              <div className="flex justify-between border-b border-[#2C2F34]/10 pb-1.5">
+                                <span className="text-gray-500 uppercase">Dimensiones:</span>
+                                <span className="text-[#2C2F34] font-semibold">{item.dimensions}</span>
+                              </div>
+                              <div className="flex justify-between border-b border-[#2C2F34]/10 pb-1.5">
+                                <span className="text-gray-500 uppercase">Tiempo Fabricación:</span>
+                                <span className="text-[#2C2F34] font-semibold">{item.leadTime}</span>
+                              </div>
+                              <div className="flex justify-between pt-0.5">
+                                <span className="text-gray-500 uppercase">Materiales:</span>
+                                <span className="text-[#2C2F34] text-right truncate max-w-[200px]">
+                                  {item.materials.slice(0, 2).join(', ')}
+                                </span>
+                              </div>
+                            </div>
+
+                            <div className="flex items-center gap-4 pt-2">
+                              <button
+                                onClick={() => setSelectedProduct(item)}
+                                className="flex-1 bg-[#2C2F34] hover:bg-black text-[#E9E7E2] hover:text-[#F0D030] text-xs font-mono uppercase tracking-widest py-3 px-5 rounded-full transition-all text-center hover:scale-105"
+                              >
+                                Ver Ficha Técnica Completa &rarr;
+                              </button>
+                              <a
+                                href={`https://wa.me/573000000000?text=${encodeURIComponent(`Hola AG Muebles, deseo consultar el sistema arquitectónico "${item.name}" (Ref: ${item.code}).`)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="w-11 h-11 rounded-full border border-[#2C2F34] hover:bg-[#F0D030] hover:border-[#F0D030] text-[#2C2F34] flex items-center justify-center transition-colors"
+                                title="WhatsApp"
+                              >
+                                <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                                  <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.634.055-1.579-.333-.945-.389-1.536-.931-1.637-1.07-.101-.138-.809-1.077-.809-2.054 0-.978.508-1.459.689-1.659.182-.2.397-.249.53-.249.133 0 .265.003.382.008.123.006.287-.046.45.344.167.399.57 1.39.621 1.493.05.103.084.224.016.358-.069.135-.104.218-.206.338-.103.12-.216.269-.309.362-.103.103-.211.215-.091.421.12.206.533.879 1.144 1.423.787.7 1.448.916 1.654 1.019.206.103.327.086.447-.052.12-.137.515-.6.653-.806.137-.206.275-.172.463-.103.189.069 1.196.564 1.402.667.206.103.344.155.395.241.052.086.052.5-.092.905z"/>
+                                </svg>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </article>
+                    );
+                  })}
+                </div>
+              ) : (
+                /* VISTA TABLA TÉCNICA INDUSTRIAL */
+                <div className="overflow-x-auto bg-white/80 rounded-2xl border border-[#2C2F34]/15 p-4 sm:p-6 shadow-sm scroll-reveal">
+                  <table className="w-full text-left border-collapse text-xs font-mono">
+                    <thead>
+                      <tr className="border-b-2 border-[#2C2F34] text-gray-500 uppercase tracking-widest text-[11px]">
+                        <th className="py-4 px-3">Código</th>
+                        <th className="py-4 px-4">Sistema / Modelo</th>
+                        <th className="py-4 px-4 hidden md:table-cell">Tipología</th>
+                        <th className="py-4 px-4 hidden lg:table-cell">Materiales Principales</th>
+                        <th className="py-4 px-4 hidden sm:table-cell">Dimensiones</th>
+                        <th className="py-4 px-3 text-right">Detalle</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-[#2C2F34]/15">
+                      {architecturalProducts.map((item) => (
+                        <tr 
+                          key={item.code}
+                          onClick={() => setSelectedProduct(item)}
+                          className="hover:bg-[#2C2F34] hover:text-[#E9E7E2] transition-colors cursor-pointer group"
+                        >
+                          <td className="py-5 px-3 font-bold text-[#2C2F34] group-hover:text-[#F0D030]">
+                            {item.code}
+                          </td>
+                          <td className="py-5 px-4">
+                            <span className="font-bold text-sm tracking-tight uppercase block group-hover:text-white">
+                              {item.name}
+                            </span>
+                            <span className="text-[10px] text-gray-500 group-hover:text-gray-300 md:hidden block">
+                              {item.typology}
+                            </span>
+                          </td>
+                          <td className="py-5 px-4 hidden md:table-cell text-gray-600 group-hover:text-gray-300 uppercase">
+                            {item.typology}
+                          </td>
+                          <td className="py-5 px-4 hidden lg:table-cell text-gray-500 group-hover:text-gray-300 truncate max-w-xs">
+                            {item.materials.join(' &bull; ')}
+                          </td>
+                          <td className="py-5 px-4 hidden sm:table-cell text-gray-600 group-hover:text-gray-300">
+                            {item.dimensions}
+                          </td>
+                          <td className="py-5 px-3 text-right">
+                            <span className="inline-flex items-center gap-1.5 underline decoration-[#F0D030] group-hover:text-[#F0D030] font-bold">
+                              Ver Ficha &rarr;
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+
+            </div>
+          </section>
+
+          {/* ==========================================================================
+              6. ARCHIVO DE MATERIALES & ACABADOS
+             ========================================================================== */}
+          <section id="materiales" className="py-20 bg-[#E9E7E2] border-t border-b border-[#2C2F34]/15">
+            <div className="container mx-auto px-4 sm:px-8">
+              <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 border-b border-[#2C2F34]/15 pb-6 scroll-reveal">
+                <div>
+                  <span className="text-xs font-mono uppercase tracking-widest text-[#E0B605] block mb-2">
+                    [ 03 // ARCHIVO DE MATERIALES ]
+                  </span>
+                  <h2 className="text-3xl sm:text-4xl font-bold uppercase tracking-tight text-[#2C2F34]">
+                    Materia Prima & Acabados Nobles
+                  </h2>
+                </div>
+                <p className="text-xs font-mono text-gray-600 max-w-sm mt-3 sm:mt-0 uppercase">
+                  Seleccionamos maderas con certificación de origen, piedras ultracompactas y lacas de alta resistencia mecánica.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+                {materialsData.map((mat) => (
+                  <div key={mat.code} className="bg-white/80 rounded-2xl overflow-hidden border border-[#2C2F34]/15 p-5 flex flex-col justify-between hover:shadow-lg transition-all group scroll-reveal">
+                    <div>
+                      <div 
+                        onClick={() => setLightboxImage({
+                          url: mat.image,
+                          title: mat.name,
+                          subtitle: `${mat.code} &bull; ${mat.finish} &bull; Origen: ${mat.origin}`,
+                          code: mat.code
+                        })}
+                        className="aspect-[4/3] rounded-xl overflow-hidden bg-gray-200 mb-4 border border-[#2C2F34]/10 cursor-zoom-in relative group/mat"
+                        title="Click para ver textura en alta resolución"
+                      >
+                        <img src={mat.image} alt={mat.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                        <div className="absolute bottom-2.5 right-2.5 bg-black/75 text-[#F0D030] text-[10px] font-mono px-2.5 py-1 rounded-full uppercase tracking-wider opacity-0 group-hover/mat:opacity-100 transition-opacity">
+                          🔍 Ver Muestra
+                        </div>
+                      </div>
+                      <div className="flex justify-between items-baseline mb-1">
+                        <span className="text-[11px] font-mono text-gray-400">{mat.code}</span>
+                        <span className="text-[11px] font-mono text-[#E0B605] uppercase">{mat.tone}</span>
+                      </div>
+                      <h3 className="text-lg font-bold uppercase text-[#2C2F34] mb-1">{mat.name}</h3>
+                      <p className="text-xs text-gray-600 leading-relaxed font-mono">{mat.finish}</p>
+                    </div>
+                    <div className="pt-4 mt-4 border-t border-[#2C2F34]/10 text-[11px] font-mono text-gray-500 flex justify-between">
+                      <span>Procedencia:</span>
+                      <span className="text-[#2C2F34] font-semibold">{mat.origin}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* ==========================================================================
+              7. EL TALLER & MAESTRÍA ARTESANAL (MANIFIESTO AROLDO GUERRERO)
+             ========================================================================== */}
+          <section id="taller" className="py-24 bg-[#E9E7E2] text-[#2C2F34] border-t border-[#2C2F34]/15">
+            <div className="container mx-auto px-4 sm:px-8">
+              <div className="border-b border-[#2C2F34]/15 pb-6 mb-16 flex flex-col sm:flex-row sm:items-center justify-between text-xs font-mono uppercase tracking-widest text-gray-500 gap-2 scroll-reveal">
+                <span>[ 04 // EL TALLER ]</span>
+                <span className="text-[#E0B605] font-bold">PRECISIÓN DE FABRICACIÓN &bull; AROLDO GUERRERO</span>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-16">
+                <div className="lg:col-span-6 space-y-6 scroll-reveal">
+                  <h2 className="text-3xl sm:text-5xl font-bold uppercase tracking-tight text-[#2C2F34] leading-tight">
+                    Ingeniería Digital & Maestría Artesanal
+                  </h2>
+                  <p className="text-sm sm:text-base text-[#2C2F34]/85 font-light leading-relaxed">
+                    En AG MUEBLES, cada encargo nace de una estrecha colaboración entre diseñadores, arquitectos y maestros ebanistas. Fundada bajo el legado y dirección de <strong>Aroldo Guerrero</strong>, combinamos fresado CNC de 5 ejes para cortes micrométricos con el acabado y ensamble manual minucioso de cada veta.
+                  </p>
+                  <p className="text-sm text-gray-600 font-light leading-relaxed">
+                    No producimos en serie. Cada módulo se parametriza según la altura de tu cielo raso, la curvatura de tus muros y las necesidades específicas de almacenamiento de tu familia o proyecto corporativo.
+                  </p>
+                  <div className="grid grid-cols-3 gap-6 pt-4 border-t border-[#2C2F34]/15 text-xs font-mono">
+                    <div>
+                      <span className="text-2xl sm:text-3xl font-black text-[#2C2F34] block mb-1">+15</span>
+                      <span className="text-gray-500 uppercase">Años de Taller</span>
+                    </div>
+                    <div>
+                      <span className="text-2xl sm:text-3xl font-black text-[#2C2F34] block mb-1">100%</span>
+                      <span className="text-gray-500 uppercase">A Medida</span>
+                    </div>
+                    <div>
+                      <span className="text-2xl sm:text-3xl font-black text-[#E0B605] block mb-1">10 Años</span>
+                      <span className="text-gray-500 uppercase">Garantía</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="lg:col-span-6 scroll-reveal">
+                  <div className="relative rounded-2xl overflow-hidden border border-[#2C2F34]/20 shadow-xl bg-gray-200">
+                    <img 
+                      src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1400&q=80" 
+                      alt="Taller AG Muebles"
+                      className="w-full aspect-[4/3] object-cover filter contrast-[1.05]"
+                    />
+                    <div className="absolute bottom-4 left-4 right-4 bg-[#2C2F34]/90 backdrop-blur-md p-3 rounded-xl border border-white/10 text-xs font-mono text-gray-200 flex justify-between">
+                      <span>Taller Central de Ebanistería</span>
+                      <span className="text-[#F0D030]">Control de Calidad</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* 4 Pasos Técnicos */}
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-6 pt-8 border-t border-[#2C2F34]/15 text-xs font-mono scroll-reveal">
+                <div className="bg-white/70 border border-[#2C2F34]/15 p-5 rounded-xl">
+                  <span className="text-[#E0B605] font-bold block mb-2">[ 01. LEVANTAMIENTO ]</span>
+                  <h4 className="text-[#2C2F34] font-bold text-sm mb-1 uppercase">Escaneo & Medición</h4>
+                  <p className="text-gray-600 leading-relaxed">Toma de cotas láser in situ y verificación de instalaciones hidrosanitarias y eléctricas.</p>
+                </div>
+                <div className="bg-white/70 border border-[#2C2F34]/15 p-5 rounded-xl">
+                  <span className="text-[#E0B605] font-bold block mb-2">[ 02. MODELADO 3D ]</span>
+                  <h4 className="text-[#2C2F34] font-bold text-sm mb-1 uppercase">Prototipado Digital</h4>
+                  <p className="text-gray-600 leading-relaxed">Generación de renders fotorrealistas y planos constructivos de despiece milimétrico.</p>
+                </div>
+                <div className="bg-white/70 border border-[#2C2F34]/15 p-5 rounded-xl">
+                  <span className="text-[#E0B605] font-bold block mb-2">[ 03. MAQUINADO CNC ]</span>
+                  <h4 className="text-[#2C2F34] font-bold text-sm mb-1 uppercase">Corte & Canteado</h4>
+                  <p className="text-gray-600 leading-relaxed">Mecanizado de alta precisión con sellado láser hidrófugo y laqueado en cabina presurizada.</p>
+                </div>
+                <div className="bg-white/70 border border-[#2C2F34]/15 p-5 rounded-xl">
+                  <span className="text-[#E0B605] font-bold block mb-2">[ 04. INSTALACIÓN ]</span>
+                  <h4 className="text-[#2C2F34] font-bold text-sm mb-1 uppercase">Montaje en Obra</h4>
+                  <p className="text-gray-600 leading-relaxed">Instalación por nuestro propio equipo de ebanistas con ajuste a plomo y certificado de garantía.</p>
+                </div>
+              </div>
+
+              <div className="mt-16 text-center scroll-reveal">
+                <button
+                  onClick={() => setIsInquiryOpen(true)}
+                  className="bg-[#2C2F34] hover:bg-black text-[#F0D030] font-mono uppercase tracking-widest text-xs font-bold px-8 py-4 rounded-full transition-all shadow-md hover:scale-105"
+                >
+                  Iniciar Asesoría Técnica con el Taller &rarr;
+                </button>
+              </div>
+
+            </div>
+          </section>
+
+          {/* ==========================================================================
+              8. PIE DE PÁGINA EDITORIAL SUIZO (100% EN UN SOLO TONO #E9E7E2)
+             ========================================================================== */}
+          <footer className="bg-[#E9E7E2] text-[#2C2F34] pt-20 pb-12 border-t border-[#2C2F34]/20">
+            <div className="container mx-auto px-4 sm:px-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 pb-16 border-b border-[#2C2F34]/15">
+                <div className="lg:col-span-5 space-y-4">
+                  <img src="assets/marca-grafica-principal.png" alt="AG MUEBLES" className="h-10 sm:h-12 w-auto" />
+                  <p className="text-xs font-mono text-gray-600 leading-relaxed max-w-sm">
+                    <strong>AG MUEBLES</strong> representa el compromiso de <strong>Aroldo Guerrero</strong> con la excelencia del mobiliario arquitectónico a medida. Precisión, innovación y respeto por la materia prima.
+                  </p>
+                  <div className="text-xs font-mono text-gray-500">
+                    <span className="text-[#2C2F34] font-bold">@ag.muebles.diseno</span> &bull; Cobertura en toda Colombia
+                  </div>
+                </div>
+
+                <div className="lg:col-span-3 space-y-3 text-xs font-mono">
+                  <h4 className="text-[#2C2F34] font-bold uppercase tracking-widest text-[11px] mb-2 border-b border-[#2C2F34]/10 pb-1">
+                    Sistemas
+                  </h4>
+                  <ul className="space-y-2 text-gray-600">
+                    <li>SIS-01 &bull; Cocinas Monolith</li>
+                    <li>SIS-02 &bull; Panel & Consola Kanso</li>
+                    <li>SIS-03 &bull; Vestidor Lumina Fumé</li>
+                    <li>SIS-04 &bull; Mesa Escultórica Kyoto</li>
+                    <li>SIS-05 &bull; Aparador Alistonado Sabi</li>
+                    <li>SIS-06 &bull; Librero Studio 360</li>
+                  </ul>
+                </div>
+
+                <div className="lg:col-span-4 space-y-3 text-xs font-mono">
+                  <h4 className="text-[#2C2F34] font-bold uppercase tracking-widest text-[11px] mb-2 border-b border-[#2C2F34]/10 pb-1">
+                    Taller & Contacto
+                  </h4>
+                  <div className="space-y-2 text-gray-600">
+                    <p>WhatsApp: <strong className="text-[#2C2F34]">+57 300 000 0000</strong></p>
+                    <p>Correo: <strong className="text-[#2C2F34]">contacto@agmuebles.com</strong></p>
+                    <p>Horario: Lunes a Sábado 8:00 AM &ndash; 6:00 PM</p>
+                    <button
+                      onClick={() => setIsInquiryOpen(true)}
+                      className="mt-3 inline-block bg-[#2C2F34] hover:bg-black text-[#F0D030] font-bold px-5 py-2.5 rounded-full uppercase tracking-wider text-[11px] transition-all hover:scale-105 shadow-sm"
+                    >
+                      Solicitar Visita Técnica
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Marca monumental en el fondo del pie de página (estilo Mara SRL) */}
+              <div className="py-8 border-b border-[#2C2F34]/10 overflow-hidden select-none">
+                <h2 className="text-[14vw] font-black uppercase text-[#2C2F34]/10 leading-none tracking-tighter text-center whitespace-nowrap">
+                  AG MUEBLES
+                </h2>
+              </div>
+
+              <div className="pt-6 flex flex-col sm:flex-row items-center justify-between text-xs font-mono text-gray-500 gap-4">
+                <p>&copy; 2026 AG MUEBLES. Aroldo Guerrero &bull; Todos los derechos reservados.</p>
+                <p className="text-gray-500">
+                  Manual de Identidad Oficial &bull; Inspiración Arquitectónica Mara SRL
+                </p>
+              </div>
+            </div>
+          </footer>
+        </div>
+
+          {/* ==========================================================================
+              9. FICHA TÉCNICA DESPLEGABLE LATERAL (SLIDE-OUT DRAWER)
+              (Sale inmediatamente al hacer click por fuera en el fondo oscuro)
+             ========================================================================== */}
+          {selectedProduct && (
+            <div 
+              className="fixed inset-0 z-50 overflow-hidden bg-black/60 backdrop-blur-sm flex justify-end animate-fadeIn"
+              onClick={() => setSelectedProduct(null)}
+              title="Click por fuera para cerrar ficha"
+            >
+              <div 
+                className="relative bg-[#E9E7E2] text-[#2C2F34] w-full max-w-2xl h-full shadow-2xl flex flex-col justify-between overflow-y-auto border-l border-[#2C2F34]/20 animate-slideLeft cursor-default"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="sticky top-0 z-20 bg-[#E9E7E2]/95 backdrop-blur-md p-6 border-b border-[#2C2F34]/15 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs font-mono bg-[#2C2F34] text-[#F0D030] px-2.5 py-0.5 rounded-sm font-bold">
+                      {selectedProduct.code}
+                    </span>
+                    <span className="text-xs font-mono uppercase tracking-widest text-gray-600">
+                      Especificación Técnica
+                    </span>
+                  </div>
+                  <button
+                    onClick={() => setSelectedProduct(null)}
+                    className="w-9 h-9 rounded-full border border-[#2C2F34]/30 flex items-center justify-center hover:bg-[#2C2F34] hover:text-white transition-colors text-lg"
+                    title="Cerrar (Esc)"
+                  >
+                    &times;
+                  </button>
+                </div>
+
+                <div className="p-6 sm:p-8 space-y-8 flex-1">
+                  <div>
+                    <span className="text-xs font-mono uppercase tracking-widest text-[#E0B605] block mb-1">
+                      {selectedProduct.typology} &bull; {selectedProduct.year}
+                    </span>
+                    <h2 className="text-3xl sm:text-4xl font-bold uppercase tracking-tight text-[#2C2F34]">
+                      {selectedProduct.name}
+                    </h2>
+                    <p className="text-xs font-mono text-gray-500 mt-1">
+                      Diseño & Dirección: {selectedProduct.designer}
+                    </p>
+                  </div>
+
+                  {/* Fotografías arquitectónicas con zoom a pantalla completa */}
+                  <div className="space-y-3">
+                    <div 
+                      onClick={() => setLightboxImage({
+                        url: selectedProduct.primaryImage,
+                        title: selectedProduct.name,
+                        subtitle: `${selectedProduct.typology} &bull; Vista Principal`,
+                        code: selectedProduct.code
+                      })}
+                      className="group/img relative aspect-[16/10] rounded-xl overflow-hidden bg-gray-300 border border-[#2C2F34]/20 cursor-zoom-in"
+                      title="Click para ver en pantalla completa"
+                    >
+                      <img src={selectedProduct.primaryImage} alt={selectedProduct.name} className="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-105" />
+                      <div className="absolute bottom-3 right-3 bg-[#2C2F34]/90 backdrop-blur-sm text-[#F0D030] text-[11px] font-mono px-3 py-1 rounded-full uppercase tracking-wider opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center gap-1.5 shadow">
+                        <span>🔍</span>
+                        <span>Ampliar foto</span>
+                      </div>
+                    </div>
+                    {selectedProduct.secondaryImage && (
+                      <div 
+                        onClick={() => setLightboxImage({
+                          url: selectedProduct.secondaryImage,
+                          title: `${selectedProduct.name} — Detalle Constructivo`,
+                          subtitle: `${selectedProduct.typology} &bull; Detalle de Acabados`,
+                          code: selectedProduct.code
+                        })}
+                        className="group/img relative aspect-[16/10] rounded-xl overflow-hidden bg-gray-300 border border-[#2C2F34]/20 cursor-zoom-in"
+                        title="Click para ver en pantalla completa"
+                      >
+                        <img src={selectedProduct.secondaryImage} alt={selectedProduct.name} className="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-105" />
+                        <div className="absolute bottom-3 right-3 bg-[#2C2F34]/90 backdrop-blur-sm text-[#F0D030] text-[11px] font-mono px-3 py-1 rounded-full uppercase tracking-wider opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center gap-1.5 shadow">
+                          <span>🔍</span>
+                          <span>Ampliar foto</span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="space-y-3">
+                    <h4 className="text-xs font-mono uppercase tracking-widest text-gray-500 border-b border-[#2C2F34]/15 pb-2">
+                      Concepto & Arquitectura
+                    </h4>
+                    <p className="text-sm text-[#2C2F34]/90 leading-relaxed">
+                      {selectedProduct.shortDesc}
+                    </p>
+                    <div className="bg-white/60 border border-[#2C2F34]/15 rounded-xl p-4 text-xs font-mono text-gray-700">
+                      <strong className="block text-[#2C2F34] uppercase mb-1">Nota de Fabricación:</strong>
+                      {selectedProduct.blueprintDesc}
+                    </div>
+                  </div>
+
+                  <div className="space-y-3">
+                    <h4 className="text-xs font-mono uppercase tracking-widest text-gray-500 border-b border-[#2C2F34]/15 pb-2">
+                      Datos Técnicos Estructurales
+                    </h4>
+                    <div className="border border-[#2C2F34]/15 rounded-xl overflow-hidden bg-white/50 text-xs font-mono">
+                      {selectedProduct.specs?.map((spec, i) => (
+                        <div key={i} className="flex justify-between p-3 border-b border-[#2C2F34]/10 last:border-b-0">
+                          <span className="text-gray-500 uppercase">{spec.label}</span>
+                          <span className="text-[#2C2F34] font-bold text-right">{spec.value}</span>
+                        </div>
+                      ))}
+                      <div className="flex justify-between p-3 border-t border-[#2C2F34]/10 bg-[#E9E7E2]/50">
+                        <span className="text-gray-500 uppercase">Tiempo de Producción</span>
+                        <span className="text-[#2C2F34] font-bold">{selectedProduct.leadTime}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="sticky bottom-0 bg-[#E9E7E2] p-6 border-t border-[#2C2F34]/15">
+                  <a
+                    href={`https://wa.me/573000000000?text=${encodeURIComponent(
+                      `Hola AG Muebles, deseo solicitar cotización técnica formal para el sistema "${selectedProduct.name}" (Ref: ${selectedProduct.code}).`
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full bg-[#2C2F34] hover:bg-black text-[#F0D030] text-xs font-mono uppercase tracking-widest py-4 px-6 rounded-full text-center transition-all shadow-md flex items-center justify-center gap-2 hover:scale-[1.02]"
+                  >
+                    <span>Consultar con un Arquitecto AG por WhatsApp</span>
+                    <span>&rarr;</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* ==========================================================================
+              10. MODAL DE ASESORÍA & COTIZACIÓN RÁPIDA
+              (Sale inmediatamente al hacer click por fuera)
+             ========================================================================== */}
+          {isInquiryOpen && (
+            <div 
+              className="fixed inset-0 z-50 overflow-y-auto bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn"
+              onClick={() => setIsInquiryOpen(false)}
+              title="Click por fuera para salir"
+            >
+              <div 
+                className="relative bg-[#E9E7E2] text-[#2C2F34] rounded-2xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-[#2C2F34]/20 cursor-default"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <button
+                  onClick={() => setIsInquiryOpen(false)}
+                  className="absolute top-4 right-4 w-8 h-8 rounded-full border border-[#2C2F34]/30 flex items-center justify-center text-gray-700 hover:bg-[#2C2F34] hover:text-white"
+                >
+                  &times;
+                </button>
+                <div className="mb-6">
+                  <span className="text-[11px] font-mono uppercase tracking-widest text-[#E0B605] block mb-1">
+                    // Contacto con el Taller
+                  </span>
+                  <h3 className="text-2xl font-bold uppercase tracking-tight text-[#2C2F34]">
+                    Iniciar Proyecto a Medida
+                  </h3>
+                  <p className="text-xs font-mono text-gray-600 mt-1">
+                    Agenda la toma de medidas o envía tus planos arquitectónicos para renderizado 3D sin costo.
+                  </p>
+                </div>
+
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    const name = e.target.clientName.value;
+                    const phone = e.target.clientPhone.value;
+                    const project = e.target.projectType.value;
+                    const url = `https://wa.me/573000000000?text=${encodeURIComponent(
+                      `Hola AG Muebles, deseo solicitar asesoría para un proyecto arquitectónico:\n- Nombre: ${name}\n- Teléfono: ${phone}\n- Tipo de Proyecto: ${project}`
+                    )}`;
+                    window.open(url, '_blank');
+                    setIsInquiryOpen(false);
+                  }}
+                  className="space-y-3 font-mono text-xs"
+                >
+                  <div>
+                    <label className="block uppercase text-gray-500 mb-1">Nombre Completo *</label>
+                    <input 
+                      type="text" 
+                      name="clientName" 
+                      required 
+                      placeholder="Ej. Arq. Daniel Valencia" 
+                      className="w-full px-4 py-2.5 rounded-lg border border-[#2C2F34]/25 bg-white focus:outline-none focus:border-[#2C2F34]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block uppercase text-gray-500 mb-1">Teléfono / WhatsApp *</label>
+                    <input 
+                      type="tel" 
+                      name="clientPhone" 
+                      required 
+                      placeholder="+57 300 000 0000" 
+                      className="w-full px-4 py-2.5 rounded-lg border border-[#2C2F34]/25 bg-white focus:outline-none focus:border-[#2C2F34]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block uppercase text-gray-500 mb-1">Tipología del Espacio *</label>
+                    <select 
+                      name="projectType" 
+                      className="w-full px-4 py-2.5 rounded-lg border border-[#2C2F34]/25 bg-white focus:outline-none focus:border-[#2C2F34]"
+                    >
+                      <option value="Cocina Monolith">Cocina Monolith a Medida</option>
+                      <option value="Panel & TV Kanso">Panel & Salón Kanso</option>
+                      <option value="Vestidor Lumina">Vestidor Lumina con Vitrinas</option>
+                      <option value="Comedor Kyoto">Mesa & Comedor Kyoto</option>
+                      <option value="Librero Studio 360">Librero Arquitectónico</option>
+                      <option value="Proyecto Integral">Residencia / Contrato Completo</option>
+                    </select>
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="w-full bg-[#2C2F34] hover:bg-black text-[#F0D030] py-3.5 rounded-full font-bold uppercase tracking-widest text-xs mt-2 transition-all shadow hover:scale-105"
+                  >
+                    Conectar con el Taller vía WhatsApp &rarr;
+                  </button>
+                </form>
+              </div>
+            </div>
+          )}
+
+          {/* ==========================================================================
+              11. VISOR DE IMÁGENES LIGHTBOX (FULL-SCREEN)
+              (Sale inmediatamente al hacer click por fuera de la foto o con tecla Esc)
+             ========================================================================== */}
+          {lightboxImage && (
+            <div 
+              className="fixed inset-0 z-[70] bg-black/90 backdrop-blur-md flex items-center justify-center p-4 sm:p-8 animate-fadeIn cursor-zoom-out select-none"
+              onClick={() => setLightboxImage(null)}
+              title="Click en cualquier parte por fuera para cerrar"
+            >
+              <div 
+                className="relative max-w-5xl max-h-[92vh] flex flex-col items-center cursor-default"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Barra de control superior */}
+                <div className="w-full flex justify-between items-center pb-3 text-xs font-mono text-gray-300">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-[#F0D030] animate-pulse"></span>
+                    <span className="text-[11px] uppercase tracking-wider text-gray-400">
+                      Click por fuera o [Esc] para salir
+                    </span>
+                  </div>
+                  <button
+                    onClick={() => setLightboxImage(null)}
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 hover:bg-[#F0D030] text-white hover:text-[#2C2F34] transition-all font-mono text-xs uppercase tracking-wider border border-white/20"
+                    title="Cerrar imagen"
+                  >
+                    <span>Cerrar</span>
+                    <span className="text-base leading-none font-bold">&times;</span>
+                  </button>
+                </div>
+
+                {/* Contenedor de la Imagen */}
+                <div className="relative rounded-2xl overflow-hidden border border-white/20 shadow-2xl bg-[#181a1b] max-h-[78vh] flex items-center justify-center">
+                  <img 
+                    src={lightboxImage.url} 
+                    alt={lightboxImage.title || 'Detalle'} 
+                    className="w-auto h-auto max-h-[76vh] max-w-[90vw] object-contain"
+                  />
+                  
+                  {/* Ficha técnica al pie de la foto */}
+                  {(lightboxImage.title || lightboxImage.subtitle) && (
+                    <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/95 via-black/70 to-transparent p-4 sm:p-6 text-white flex flex-col sm:flex-row justify-between items-start sm:items-end gap-2">
+                      <div>
+                        {lightboxImage.code && (
+                          <span className="text-xs font-mono bg-[#F0D030] text-[#2C2F34] font-bold px-2.5 py-0.5 rounded-sm uppercase tracking-wider mr-2 inline-block mb-1">
+                            {lightboxImage.code}
+                          </span>
+                        )}
+                        <h4 className="text-lg sm:text-xl font-bold uppercase tracking-tight text-white inline-block">
+                          {lightboxImage.title}
+                        </h4>
+                        {lightboxImage.subtitle && (
+                          <p 
+                            className="text-xs font-mono text-gray-300 mt-1"
+                            dangerouslySetInnerHTML={{ __html: lightboxImage.subtitle }}
+                          />
+                        )}
+                      </div>
+                      <span className="text-[10px] font-mono text-[#F0D030] uppercase tracking-widest hidden sm:inline border border-[#F0D030]/30 px-2 py-1 rounded">
+                        AG Muebles &bull; Alta Ebanistería
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* ==========================================================================
+              12. BOTÓN FLOTANTE WHATSAPP CON MICROINTERACCIÓN
+             ========================================================================== */}
+          <a
+            href="https://wa.me/573000000000?text=Hola%20AG%20Muebles,%20deseo%20asesoría%20para%20un%20proyecto%20arquitectónico."
+            target="_blank"
+            rel="noopener noreferrer"
+            className="fixed bottom-6 right-6 w-14 h-14 bg-[#2C2F34] hover:bg-black text-[#F0D030] rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-transform z-40 border border-white/20"
+            aria-label="WhatsApp"
+            title="Chat con Ebanista / Arquitecto"
+          >
+            <svg className="w-7 h-7 fill-current" viewBox="0 0 24 24">
+              <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.634.055-1.579-.333-.945-.389-1.536-.931-1.637-1.07-.101-.138-.809-1.077-.809-2.054 0-.978.508-1.459.689-1.659.182-.2.397-.249.53-.249.133 0 .265.003.382.008.123.006.287-.046.45.344.167.399.57 1.39.621 1.493.05.103.084.224.016.358-.069.135-.104.218-.206.338-.103.12-.216.269-.309.362-.103.103-.211.215-.091.421.12.206.533.879 1.144 1.423.787.7 1.448.916 1.654 1.019.206.103.327.086.447-.052.12-.137.515-.6.653-.806.137-.206.275-.172.463-.103.189.069 1.196.564 1.402.667.206.103.344.155.395.241.052.086.052.5-.092.905z"/>
+            </svg>
+          </a>
+
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
