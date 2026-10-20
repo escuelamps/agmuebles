@@ -195,12 +195,25 @@
     const { useState, useEffect, useRef } = React;
 
     // --- CATÁLOGO DE SISTEMAS ARQUITECTÓNICOS (100% EN ESPAÑOL) ---
+    const categories = [
+      { id: 'todos', name: 'Todos los Espacios', count: 15 },
+      { id: 'cocina', name: 'Cocina', count: 3 },
+      { id: 'baños', name: 'Baños', count: 3 },
+      { id: 'sala', name: 'Sala', count: 3 },
+      { id: 'comedores', name: 'Comedores', count: 3 },
+      { id: 'varios', name: 'Varios', count: 3 }
+    ];
+
+    // --- CATÁLOGO DE SISTEMAS ARQUITECTÓNICOS POR SECCIONES (100% EN ESPAÑOL) ---
     const architecturalProducts = [
+      // --- SECCIÓN 1: COCINA ---
       {
-        code: 'SIS-01',
-        refNumber: '01 / 06',
-        name: 'Sistema de Cocina Monolith',
-        typology: 'Cocina de Autor con Despensa Continua',
+        category: 'cocina',
+        categoryLabel: 'Cocina',
+        code: 'COC-01',
+        refNumber: '01 / 15',
+        name: 'Cocina Arquitectónica Monolith',
+        typology: 'Cocina de Autor con Isla Sinterizada',
         designer: 'Taller Aroldo Guerrero',
         year: '2026',
         shortDesc: 'Diseño arquitectónico monolítico. Frentes continuos sin tirador con junta a 45 grados, isla central en piedra sinterizada y torres técnicas con electrodomésticos embutidos a ras.',
@@ -218,8 +231,129 @@
         ]
       },
       {
-        code: 'SIS-02',
-        refNumber: '02 / 06',
+        category: 'cocina',
+        categoryLabel: 'Cocina',
+        code: 'COC-02',
+        refNumber: '02 / 15',
+        name: 'Cocina Lineal Roble & Cuarzo',
+        typology: 'Concepto Abierto & Módulos Altos a Ras',
+        designer: 'Taller Aroldo Guerrero',
+        year: '2026',
+        shortDesc: 'Disposición lineal optimizada para espacios integrados. Módulos aéreos de apertura abatible asistida por pistones Blum Aventos y salpicadero en cuarzo continuo.',
+        dimensions: 'Largo: 3.60m × Profundidad: 0.65m × Altura: 2.50m',
+        materials: ['Roble Europeo Tratado', 'Cuarzo Blanco Puro', 'Perfiles Gola Aluminio', 'Cajoneras Ocultas'],
+        leadTime: '4 a 5 semanas',
+        primaryImage: 'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1400&q=85',
+        secondaryImage: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1400&q=85',
+        blueprintDesc: 'Montaje suspendido de alta carga con chasis estructural invisible. Frentes lacados poliuretano bicomponente mate.',
+        specs: [
+          { label: 'Aperturas Aéreas', value: 'Blum Aventos HF con freno electromecánico' },
+          { label: 'Protección Térmica', value: 'Aislamiento ignífugo sobre zona de inducción' },
+          { label: 'Zócalo Técnico', value: 'Aluminio satinado con junta estanca antimanchas' },
+          { label: 'Filtros Despensa', value: 'Canastillas cromadas de extracción individual' }
+        ]
+      },
+      {
+        category: 'cocina',
+        categoryLabel: 'Cocina',
+        code: 'COC-03',
+        refNumber: '03 / 15',
+        name: 'Isla de Autor & Despensa Integrada',
+        typology: 'Isla Central Desayunadora con Torre Oculta',
+        designer: 'Taller Aroldo Guerrero',
+        year: '2026',
+        shortDesc: 'Isla central con barra voladiza para comensales en madera maciza de roble y sistema de puertas escamoteables tipo bolsillo que ocultan la despensa completa.',
+        dimensions: 'Isla: 2.80m × 1.20m &bull; Despensa: 2.40m × 2.60m',
+        materials: ['Roble Macizo Torneado', 'Piedra Sinterizada Dark', 'Herrajes Hawa-Concepta', 'Luces de Presencia'],
+        leadTime: '5 a 6 semanas',
+        primaryImage: 'https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=1400&q=85',
+        secondaryImage: 'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1400&q=85',
+        blueprintDesc: 'Mecanismo de puertas ocultables Pocket Door que se insertan en los costados de la torre para apertura total sin interferencias.',
+        specs: [
+          { label: 'Puertas Pocket', value: 'Sistema escamoteable Hawa Concepta 25' },
+          { label: 'Barra Desayunadora', value: 'Roble macizo 50mm con tratamiento antimanchas' },
+          { label: 'Almacenamiento', value: 'Gavetas interiores con divisiones de cubertería en roble' },
+          { label: 'Trayectoria', value: '16 Años de experiencia artesanal en taller' }
+        ]
+      },
+
+      // --- SECCIÓN 2: BAÑOS ---
+      {
+        category: 'baños',
+        categoryLabel: 'Baños',
+        code: 'BAN-01',
+        refNumber: '04 / 15',
+        name: 'Vanity Flotante Calacatta & Roble',
+        typology: 'Mueble de Baño Suspendido de Alta Gama',
+        designer: 'Taller Aroldo Guerrero',
+        year: '2026',
+        shortDesc: 'Mueble suspendido en roble hidrófugo marino con encimera y lavamanos termoformado integrado en piedra sinterizada Calacatta. Gavetas con cierre silencioso.',
+        dimensions: 'Largo: 1.40m – 2.00m × Fondo: 0.52m × Alto: 0.50m',
+        materials: ['Roble Marino Hidrófugo', 'Mármol Calacatta Sinterizado', 'Correderas Ocultas', 'Sifón Compacto'],
+        leadTime: '3 a 4 semanas',
+        primaryImage: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1400&q=85',
+        secondaryImage: 'https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1400&q=85',
+        blueprintDesc: 'Estructura con chasis de cuelgue invisible probado para soportar 120 kg. Sellado perimetral antihumedad grado IP65.',
+        specs: [
+          { label: 'Resistencia a Humedad', value: 'Tratamiento hidrófugo poliuretánico 4 capas' },
+          { label: 'Encimera', value: 'Piedra sinterizada antibacteriana sin juntas visibles' },
+          { label: 'Gavetas Interiores', value: 'Salvasifón troquelado en madera de roble' },
+          { label: 'Anclaje', value: 'Soportes regulables en altura y profundidad' }
+        ]
+      },
+      {
+        category: 'baños',
+        categoryLabel: 'Baños',
+        code: 'BAN-02',
+        refNumber: '05 / 15',
+        name: 'Mueble de Baño Minimalista Nogal',
+        typology: 'Vanity Doble Seno en Chapa de Nogal',
+        designer: 'Taller Aroldo Guerrero',
+        year: '2026',
+        shortDesc: 'Vanity con dos senos integrados, frentes lisos con cantos a 45 grados y acabado al aceite mate que resalta la belleza natural de las vetas del nogal.',
+        dimensions: 'Largo: 1.80m × Fondo: 0.50m × Alto: 0.45m',
+        materials: ['Nogal Canaletto Seleccionado', 'Piedra Negro Marquina', 'Herrajes Blum Tip-On'],
+        leadTime: '3 a 4 semanas',
+        primaryImage: 'https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1400&q=85',
+        secondaryImage: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1400&q=85',
+        blueprintDesc: 'Apertura mediante expulsión mecánica suave Tip-On con amortiguación Blumotion integrada.',
+        specs: [
+          { label: 'Frentes', value: 'Veta continua seleccionada a mano en taller' },
+          { label: 'Gavetas', value: 'Extracción completa con fondo antideslizante' },
+          { label: 'Desagües', value: 'Compatibilidad con grifería a muro o de repisa' },
+          { label: 'Acabado', value: 'Poro cerrado con barniz acrílico antihuella' }
+        ]
+      },
+      {
+        category: 'baños',
+        categoryLabel: 'Baños',
+        code: 'BAN-03',
+        refNumber: '06 / 15',
+        name: 'Espejo Mural Retroiluminado & Lencería',
+        typology: 'Módulo Vertical de Baño & Espejo LED',
+        designer: 'Taller Aroldo Guerrero',
+        year: '2026',
+        shortDesc: 'Conjunto arquitectónico compuesto por espejo circular biselado con halo LED difuso 2700K y columna vertical suspendida para almacenamiento de toallas y cosmética.',
+        dimensions: 'Espejo: Ø 0.90m &bull; Columna: 0.40m × 0.30m × 1.60m',
+        materials: ['Cristal Float con Lámina Antiempañante', 'Roble Tinte Carbón', 'LED Difuso Cálido'],
+        leadTime: '2 a 3 semanas',
+        primaryImage: 'https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1400&q=85',
+        secondaryImage: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1400&q=85',
+        blueprintDesc: 'Camerino oculto tras espejo con bisagras de 110° con apertura push y repisas regulables en cristal templado.',
+        specs: [
+          { label: 'Iluminación', value: 'CRI > 90 luz natural para tocador' },
+          { label: 'Antiempañante', value: 'Resistencia térmica posterior de bajo consumo' },
+          { label: 'Repisas', value: 'Cristal templado 6 mm con borde pulido' },
+          { label: 'Conexión', value: 'Tomas eléctricas internas para rasuradora / secador' }
+        ]
+      },
+
+      // --- SECCIÓN 3: SALA ---
+      {
+        category: 'sala',
+        categoryLabel: 'Sala',
+        code: 'SAL-01',
+        refNumber: '07 / 15',
         name: 'Panel Mural & Mueble TV Kanso',
         typology: 'Sistema Suspendido & Panel Acústico',
         designer: 'Taller Aroldo Guerrero',
@@ -239,50 +373,10 @@
         ]
       },
       {
-        code: 'SIS-03',
-        refNumber: '03 / 06',
-        name: 'Vestidor Walk-In Lumina',
-        typology: 'Armario Arquitectónico & Vitrinas Fumé',
-        designer: 'Taller Aroldo Guerrero',
-        year: '2026',
-        shortDesc: 'Vestidor estructural abierto en perfilería de aluminio negro carbón mate, puertas en vidrio templado fumé e isla central para accesorios.',
-        dimensions: 'Módulos a medida por tramos de 60, 80, 100 y 120 cm',
-        materials: ['Vidrio Templado Fumé 8mm', 'Aluminio Anodizado Carbón', 'Roble Tinte Negro', 'Gamuza de Protección'],
-        leadTime: '4 a 5 semanas',
-        primaryImage: 'https://images.unsplash.com/photo-1616046229478-9901c5536a45?auto=format&fit=crop&w=1400&q=85',
-        secondaryImage: 'https://images.unsplash.com/photo-1558997519-83ea9252def8?auto=format&fit=crop&w=1400&q=85',
-        blueprintDesc: 'Montantes de aluminio estructural anclados de piso a cielo raso. Bisagras embutidas sin tornillos visibles.',
-        specs: [
-          { label: 'Perfilería Metálica', value: 'Aleación 6063 microtexturada en negro mate' },
-          { label: 'Cristales', value: 'Vidrio templado reflectivo de 8 mm con bisel' },
-          { label: 'Isla de Accesorios', value: 'Gavetas compartimentadas forradas en gamuza' },
-          { label: 'Sensores', value: 'Encendido automático por proximidad magnética' }
-        ]
-      },
-      {
-        code: 'SIS-04',
-        refNumber: '04 / 06',
-        name: 'Mesa Escultórica Kyoto',
-        typology: 'Mesa de Reunión & Comedor Principal',
-        designer: 'Taller Aroldo Guerrero',
-        year: '2026',
-        shortDesc: 'Mesa con doble pedestal escultórico estriado. Tapa maciza en chapa gruesa de roble con cantos suavemente redondeados en alas de gaviota.',
-        dimensions: 'Largo: 2.40m – 3.20m × Ancho: 1.10m × Alto: 0.75m',
-        materials: ['Roble Americano Seleccionado', 'Refuerzos en Acero', 'Laca Mate Antihuella'],
-        leadTime: '3 a 4 semanas',
-        primaryImage: 'https://images.unsplash.com/photo-1617806118233-18e1de247200?auto=format&fit=crop&w=1400&q=85',
-        secondaryImage: 'https://images.unsplash.com/photo-1530018607912-eff2daa1bac4?auto=format&fit=crop&w=1400&q=85',
-        blueprintDesc: 'Bases cilíndricas torneadas con estructura interior de rigidización metálica. Sobre desmontable con uniones calibradas.',
-        specs: [
-          { label: 'Espesor de Cubierta', value: '42 mm con canto biselado aerodinámico' },
-          { label: 'Tratamiento Superficial', value: 'Acabado acrílico al agua 5 gloss poro abierto' },
-          { label: 'Capacidad', value: '8 a 12 comensales según largo elegido' },
-          { label: 'Mantenimiento', value: 'Tratamiento hidrófugo y anti-manchas' }
-        ]
-      },
-      {
-        code: 'SIS-05',
-        refNumber: '05 / 06',
+        category: 'sala',
+        categoryLabel: 'Sala',
+        code: 'SAL-02',
+        refNumber: '08 / 15',
         name: 'Aparador Ranurado Sabi',
         typology: 'Aparador Bajo de Almacenamiento',
         designer: 'Taller Aroldo Guerrero',
@@ -302,13 +396,134 @@
         ]
       },
       {
-        code: 'SIS-06',
-        refNumber: '06 / 06',
+        category: 'sala',
+        categoryLabel: 'Sala',
+        code: 'SAL-03',
+        refNumber: '09 / 15',
+        name: 'Mesa de Centro Escultórica Geometría',
+        typology: 'Mesa Baja de Centro en Roble & Metal',
+        designer: 'Taller Aroldo Guerrero',
+        year: '2026',
+        shortDesc: 'Mesa de centro con doble volumen asimétrico. Tapa en roble europeo con cantos biselados en ala y base cilíndrica maciza torneada en taller.',
+        dimensions: 'Diámetro: 1.10m × Altura: 0.38m',
+        materials: ['Roble Macizo Torneado', 'Acero Carbón Mate', 'Cera Vegetal Natural'],
+        leadTime: '2 a 3 semanas',
+        primaryImage: 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1400&q=85',
+        secondaryImage: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1400&q=85',
+        blueprintDesc: 'Unión oculta mediante espigas de madera dura encoladas bajo prensa hidráulica. Superficie acabada a mano.',
+        specs: [
+          { label: 'Ensamble', value: 'Uniones tradicionales de ebanistería sin tornillos' },
+          { label: 'Resistencia', value: 'Tratamiento hidrorrepelente contra derrames' },
+          { label: 'Peso', value: '38 kg de madera maciza seleccionada' },
+          { label: 'Origen', value: 'Hecho 100% en Bogotá por ebanistas artesanos' }
+        ]
+      },
+
+      // --- SECCIÓN 4: COMEDORES ---
+      {
+        category: 'comedores',
+        categoryLabel: 'Comedores',
+        code: 'COM-01',
+        refNumber: '10 / 15',
+        name: 'Mesa Escultórica Kyoto',
+        typology: 'Mesa de Reunión & Comedor Principal',
+        designer: 'Taller Aroldo Guerrero',
+        year: '2026',
+        shortDesc: 'Mesa monumental para 8 a 12 comensales con doble pedestal estriado. Tapa maciza en chapa gruesa de roble con cantos suavemente redondeados en alas de gaviota.',
+        dimensions: 'Largo: 2.40m – 3.20m × Ancho: 1.10m × Alto: 0.75m',
+        materials: ['Roble Americano Seleccionado', 'Refuerzos en Acero', 'Laca Mate Antihuella'],
+        leadTime: '3 a 4 semanas',
+        primaryImage: 'https://images.unsplash.com/photo-1617806118233-18e1de247200?auto=format&fit=crop&w=1400&q=85',
+        secondaryImage: 'https://images.unsplash.com/photo-1530018607912-eff2daa1bac4?auto=format&fit=crop&w=1400&q=85',
+        blueprintDesc: 'Bases cilíndricas torneadas con estructura interior de rigidización metálica. Sobre desmontable con uniones calibradas.',
+        specs: [
+          { label: 'Espesor de Cubierta', value: '42 mm con canto biselado aerodinámico' },
+          { label: 'Tratamiento Superficial', value: 'Acabado acrílico al agua 5 gloss poro abierto' },
+          { label: 'Capacidad', value: '8 a 12 comensales según largo elegido' },
+          { label: 'Mantenimiento', value: 'Tratamiento hidrófugo y anti-manchas' }
+        ]
+      },
+      {
+        category: 'comedores',
+        categoryLabel: 'Comedores',
+        code: 'COM-02',
+        refNumber: '11 / 15',
+        name: 'Credenza Bufetera de Comedor',
+        typology: 'Mueble Auxiliar Coplanario para Cristalería',
+        designer: 'Taller Aroldo Guerrero',
+        year: '2026',
+        shortDesc: 'Aparador de comedor con puertas correderas coplanarias enrasadas al mismo nivel, divisiones para vajilla de lujo y cajón interior para cubertería.',
+        dimensions: 'Largo: 2.20m × Fondo: 0.50m × Alto: 0.85m',
+        materials: ['Nogal Canaletto', 'Mármol Blanco Carrara', 'Interior Forrado Gamuza'],
+        leadTime: '3 a 4 semanas',
+        primaryImage: 'https://images.unsplash.com/photo-1530018607912-eff2daa1bac4?auto=format&fit=crop&w=1400&q=85',
+        secondaryImage: 'https://images.unsplash.com/photo-1617806118233-18e1de247200?auto=format&fit=crop&w=1400&q=85',
+        blueprintDesc: 'Sistema coplanario de apertura deslizante suave Cinetto que mantiene las puertas en el mismo plano cuando están cerradas.',
+        specs: [
+          { label: 'Herraje Coplanario', value: 'Deslizamiento suave con freno neumático' },
+          { label: 'Cajón Oculto', value: 'Gaveta superior con compartimentos para cubiertos' },
+          { label: 'Encimera', value: 'Mármol pulido mate con sellado impermeabilizante' },
+          { label: 'Iluminación', value: 'Sensor infrarrojo al abrir las puertas' }
+        ]
+      },
+      {
+        category: 'comedores',
+        categoryLabel: 'Comedores',
+        code: 'COM-03',
+        refNumber: '12 / 15',
+        name: 'Mesa Circular Ebanistería Nara',
+        typology: 'Comedor Redondo de Madera Maciza',
+        designer: 'Taller Aroldo Guerrero',
+        year: '2026',
+        shortDesc: 'Comedor circular para 6 a 8 puestos. Base central en pedestal cilíndrico alistonado que libera completamente el espacio de las piernas.',
+        dimensions: 'Diámetro: 1.40m – 1.60m × Altura: 0.75m',
+        materials: ['Roble Flormorado Macizo', 'Acabado Poro Abierto', 'Lastre de Estabilidad'],
+        leadTime: '3 a 4 semanas',
+        primaryImage: 'https://images.unsplash.com/photo-1597072689227-8882273e8f6a?auto=format&fit=crop&w=1400&q=85',
+        secondaryImage: 'https://images.unsplash.com/photo-1617806118233-18e1de247200?auto=format&fit=crop&w=1400&q=85',
+        blueprintDesc: 'Estructura cónica central reforzada con disco metálico de contrapeso para estabilidad absoluta sin vibraciones.',
+        specs: [
+          { label: 'Capacidad', value: '6 a 8 puestos cómodamente distribuidos' },
+          { label: 'Base Alistonada', value: 'Listonería vertical maciza con junta invisible' },
+          { label: 'Canto Perimetral', value: 'Canto suavizado con radio ergonómico' },
+          { label: 'Tratamiento', value: 'Protección contra calor y líquidos' }
+        ]
+      },
+
+      // --- SECCIÓN 5: VARIOS (VESTIERES, BIBLIOTECAS & PUERTAS) ---
+      {
+        category: 'varios',
+        categoryLabel: 'Varios',
+        code: 'VAR-01',
+        refNumber: '13 / 15',
+        name: 'Vestidor Walk-In Lumina',
+        typology: 'Armario Arquitectónico & Vitrinas Fumé',
+        designer: 'Taller Aroldo Guerrero',
+        year: '2026',
+        shortDesc: 'Vestidor estructural abierto en perfilería de aluminio negro carbón mate, puertas en vidrio templado fumé e isla central para accesorios.',
+        dimensions: 'Módulos a medida por tramos de 60, 80, 100 y 120 cm',
+        materials: ['Vidrio Templado Fumé 8mm', 'Aluminio Anodizado Carbón', 'Roble Tinte Negro', 'Gamuza de Protección'],
+        leadTime: '4 a 5 semanas',
+        primaryImage: 'https://images.unsplash.com/photo-1616046229478-9901c5536a45?auto=format&fit=crop&w=1400&q=85',
+        secondaryImage: 'https://images.unsplash.com/photo-1558997519-83ea9252def8?auto=format&fit=crop&w=1400&q=85',
+        blueprintDesc: 'Montantes de aluminio estructural anclados de piso a cielo raso. Bisagras embutidas sin tornillos visibles.',
+        specs: [
+          { label: 'Perfilería Metálica', value: 'Aleación 6063 microtexturada en negro mate' },
+          { label: 'Cristales', value: 'Vidrio templado reflectivo de 8 mm con bisel' },
+          { label: 'Isla de Accesorios', value: 'Gavetas compartimentadas forradas en gamuza' },
+          { label: 'Sensores', value: 'Encendido automático por proximidad magnética' }
+        ]
+      },
+      {
+        category: 'varios',
+        categoryLabel: 'Varios',
+        code: 'VAR-02',
+        refNumber: '14 / 15',
         name: 'Librero Estructural Studio 360',
         typology: 'Librería Integral de Suelo a Techo',
         designer: 'Taller Aroldo Guerrero',
         year: '2026',
-        shortDesc: 'Sistema reticular a medida de suelo a techo. Módulos ciegos inferiores con gavetas, nichos asimétricos e integración de escritorio flotante.',
+        shortDesc: 'Sistema reticular a medida de suelo a techo. Módulos ciegos inferiores con gavetas, nichos asimétricos e integración de escritorio flotante para home office.',
         dimensions: 'Altura hasta 3.60m × Desarrollo lineal ilimitado',
         materials: ['Roble Seleccionado', 'Laca Carbón #2C2F34', 'Acentos Amarillo AG #F0D030'],
         leadTime: '4 a 6 semanas',
@@ -319,7 +534,30 @@
           { label: 'Modularidad', value: 'Huecos variables de 30 a 90 cm de luz' },
           { label: 'Tomas Eléctricas', value: 'Puntos USB-C y tomas Schuko ocultas' },
           { label: 'Iluminación', value: 'Difusores de policarbonato a ras de balda' },
-          { label: 'Garantía Estructural', value: '10 años en estabilidad dimensional' }
+          { label: 'Garantía Estructural', value: '16 Años de experiencia en estabilidad dimensional' }
+        ]
+      },
+      {
+        category: 'varios',
+        categoryLabel: 'Varios',
+        code: 'VAR-03',
+        refNumber: '15 / 15',
+        name: 'Puertas Pivotantes & Paneles de Paso',
+        typology: 'Carpintería Arquitectónica de Piso a Techo',
+        designer: 'Taller Aroldo Guerrero',
+        year: '2026',
+        shortDesc: 'Puertas de paso monumentales pivotantes sin marco visto. Enchape a dos caras con aislamiento fonoacústico y cierre magnético suave.',
+        dimensions: 'Altura hasta 3.20m × Ancho: 1.00m – 1.40m',
+        materials: ['Chapa de Nogal / Roble', 'Pívot Oculto FritsJurgens', 'Cerradura Magnética'],
+        leadTime: '3 a 4 semanas',
+        primaryImage: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1400&q=85',
+        secondaryImage: 'https://images.unsplash.com/photo-1616046229478-9901c5536a45?auto=format&fit=crop&w=1400&q=85',
+        blueprintDesc: 'Pívot de suelo oculto que permite giro de 360 grados o retención a 90 grados sin necesidad de cierrapuertas aéreo.',
+        specs: [
+          { label: 'Sistema Pivot', value: 'Herraje FritsJurgens System M con freno regulable' },
+          { label: 'Aislamiento', value: 'Núcleo acústico de alta densidad (38 dB)' },
+          { label: 'Enrasado', value: 'Alineación perfecta con panel mural' },
+          { label: 'Cerradura', value: 'Picaporte magnético Bonaiti silencioso' }
         ]
       }
     ];
@@ -336,6 +574,7 @@
     function App() {
       // Estado de navegación y vistas
       const [viewMode, setViewMode] = useState('gallery'); // 'gallery' | 'index'
+      const [selectedCategory, setSelectedCategory] = useState('todos'); // 'todos' | 'cocina' | 'baños' | 'sala' | 'comedores' | 'varios'
       const [isNavOpen, setIsNavOpen] = useState(false);
       const [selectedProduct, setSelectedProduct] = useState(null);
       const [isInquiryOpen, setIsInquiryOpen] = useState(false);
@@ -420,16 +659,22 @@
       }, [isPageExpanded, viewMode]);
 
       const navItems = [
-        { num: '01', title: 'Sistemas y Espacios', target: 'sistemas', img: architecturalProducts[0].primaryImage },
-        { num: '02', title: 'Índice de Mobiliario', target: 'index-view', img: architecturalProducts[1].primaryImage },
-        { num: '03', title: 'Espacio Virtual 3D & AR', target: 'realidad-aumentada', img: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=1200&q=80' },
-        { num: '04', title: 'Archivo de Materiales', target: 'materiales', img: materialsData[0].image },
-        { num: '05', title: 'El Taller & Ebanistería', target: 'taller', img: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80' },
-        { num: '06', title: 'Solicitar Asesoría 3D', target: 'inquiry', img: architecturalProducts[2].primaryImage }
+        { num: '01', title: 'Cocinas', target: 'cat-cocina', img: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1400&q=85' },
+        { num: '02', title: 'Baños', target: 'cat-baños', img: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1400&q=85' },
+        { num: '03', title: 'Sala', target: 'cat-sala', img: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1400&q=85' },
+        { num: '04', title: 'Comedores', target: 'cat-comedores', img: 'https://images.unsplash.com/photo-1617806118233-18e1de247200?auto=format&fit=crop&w=1400&q=85' },
+        { num: '05', title: 'Varios (Vestier / Estudio)', target: 'cat-varios', img: 'https://images.unsplash.com/photo-1616046229478-9901c5536a45?auto=format&fit=crop&w=1400&q=85' },
+        { num: '06', title: 'Espacio 3D & Realidad Aumentada', target: 'realidad-aumentada', img: 'assets/marca-grafica-principal.png' },
+        { num: '07', title: 'Archivo de Materiales', target: 'materiales', img: materialsData[0].image },
+        { num: '08', title: 'El Taller (16 Años)', target: 'taller', img: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80' }
       ];
 
       const scrollTo = (id) => {
-        if (id === 'index-view') {
+        if (id.startsWith('cat-')) {
+          const cat = id.replace('cat-', '');
+          setSelectedCategory(cat);
+          document.getElementById('sistemas')?.scrollIntoView({ behavior: 'smooth' });
+        } else if (id === 'index-view') {
           setViewMode('index');
           document.getElementById('sistemas')?.scrollIntoView({ behavior: 'smooth' });
         } else if (id === 'inquiry') {
@@ -646,12 +891,12 @@
               <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs font-mono text-gray-400 gap-4">
                 <span>FUNDADO EN 2026 &bull; SISTEMAS ARQUITECTÓNICOS AROLDO GUERRERO</span>
                 <div className="flex items-center gap-6">
-                  <a href="https://instagram.com/ag.muebles.diseno" target="_blank" className="hover:text-[#F0D030]">
-                    Instagram: @ag.muebles.diseno
+                  <a href="https://www.instagram.com/agmueblescol/" target="_blank" className="hover:text-[#F0D030]">
+                    Instagram: @agmueblescol
                   </a>
                   <span>|</span>
-                  <a href="tel:+573000000000" className="hover:text-[#F0D030]">
-                    +57 300 000 0000
+                  <a href="tel:+573183766891" className="hover:text-[#F0D030]">
+                    +57 318 376 6891
                   </a>
                 </div>
               </div>
@@ -667,10 +912,10 @@
               <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-[#2C2F34]/15 pb-4 mb-10 text-xs font-mono uppercase tracking-widest text-gray-600 gap-2">
                 <div className="flex items-center gap-3">
                   <span className="w-2 h-2 rounded-full bg-[#E0B605]"></span>
-                  <span>AG MUEBLES // PRODUCCIÓN ARQUITECTÓNICA A MEDIDA</span>
+                  <span>AG MUEBLES // 16 AÑOS DE EXPERIENCIA EN ALTA EBANISTERÍA</span>
                 </div>
                 <div className="flex items-center gap-6">
-                  <span>COLECCIÓN 2026</span>
+                  <span>16 AÑOS DE EXPERIENCIA &bull; COLECCIÓN 2026</span>
                   <span>BOGOTÁ, COLOMBIA</span>
                 </div>
               </div>
@@ -707,7 +952,7 @@
                       </div>
                       <div>
                         <span className="block text-gray-400">Garantía:</span>
-                        <strong className="text-[#2C2F34]">10 Años Estructural</strong>
+                        <strong className="text-[#2C2F34]">16 Años de Experiencia</strong>
                       </div>
                     </div>
 
@@ -805,11 +1050,41 @@
                 </div>
               </div>
 
+              {/* BARRA DE FILTRO POR SECCIONES ARQUITECTÓNICAS */}
+              <div className="flex flex-wrap items-center gap-2 mb-12 border-b border-[#2C2F34]/15 pb-4">
+                <span className="text-xs font-mono uppercase text-gray-500 mr-2 hidden sm:inline">
+                  Espacios:
+                </span>
+                {categories.map(cat => {
+                  const isActive = selectedCategory === cat.id;
+                  return (
+                    <button
+                      key={cat.id}
+                      onClick={() => setSelectedCategory(cat.id)}
+                      className={`px-4 py-2 rounded-full text-xs font-mono uppercase tracking-wider transition-all flex items-center gap-2 ${
+                        isActive
+                          ? 'bg-[#2C2F34] text-[#F0D030] font-bold shadow-md scale-105'
+                          : 'bg-white/50 text-[#2C2F34] hover:bg-white border border-[#2C2F34]/15'
+                      }`}
+                    >
+                      <span>{cat.name}</span>
+                      <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold ${
+                        isActive ? 'bg-[#F0D030] text-[#2C2F34]' : 'bg-[#2C2F34]/10 text-gray-600'
+                      }`}>
+                        {cat.count}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+
               {/* RENDERIZADO SEGÚN VISTA SELECCIONADA */}
               {viewMode === 'gallery' ? (
                 /* VISTA GALERÍA CON TARJETAS EDITORIALES ANIMADAS EN SCROLL */
                 <div className="space-y-16 sm:space-y-24">
-                  {architecturalProducts.map((item, index) => {
+                  {architecturalProducts
+                    .filter(item => selectedCategory === 'todos' ? true : item.category === selectedCategory)
+                    .map((item, index) => {
                     const isReversed = index % 2 === 1;
 
                     return (
@@ -892,7 +1167,7 @@
                                 Ver Ficha Técnica Completa &rarr;
                               </button>
                               <a
-                                href={`https://wa.me/573000000000?text=${encodeURIComponent(`Hola AG Muebles, deseo consultar el sistema arquitectónico "${item.name}" (Ref: ${item.code}).`)}`}
+                                href={`https://wa.me/573183766891?text=${encodeURIComponent(`Hola AG Muebles, deseo consultar el sistema arquitectónico "${item.name}" (Ref: ${item.code}).`)}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="w-11 h-11 rounded-full border border-[#2C2F34] hover:bg-[#F0D030] hover:border-[#F0D030] text-[#2C2F34] flex items-center justify-center transition-colors"
@@ -924,7 +1199,9 @@
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-[#2C2F34]/15">
-                      {architecturalProducts.map((item) => (
+                      {architecturalProducts
+                    .filter(item => selectedCategory === 'todos' ? true : item.category === selectedCategory)
+                    .map((item) => (
                         <tr 
                           key={item.code}
                           onClick={() => setSelectedProduct(item)}
@@ -1077,7 +1354,7 @@
                       </button>
 
                       <a
-                        href={`https://wa.me/573000000000?text=${encodeURIComponent('Hola AG Muebles, vi la pieza en Realidad Aumentada (3D-01 Silla Escultórica) y deseo cotizarla a medida.')}`}
+                        href={`https://wa.me/573183766891?text=${encodeURIComponent('Hola AG Muebles, vi la pieza en Realidad Aumentada (3D-01 Silla Escultórica) y deseo cotizarla a medida.')}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="w-full border border-[#2C2F34] hover:bg-[#2C2F34] hover:text-white text-[#2C2F34] text-xs font-mono uppercase tracking-widest py-3 px-6 rounded-xl flex items-center justify-center gap-2 transition-all"
@@ -1303,7 +1580,7 @@
                     <strong>AG MUEBLES</strong> representa el compromiso de <strong>Aroldo Guerrero</strong> con la excelencia del mobiliario arquitectónico a medida. Precisión, innovación y respeto por la materia prima.
                   </p>
                   <div className="text-xs font-mono text-gray-500">
-                    <span className="text-[#2C2F34] font-bold">@ag.muebles.diseno</span> &bull; Cobertura en toda Colombia
+                    <span className="text-[#2C2F34] font-bold">@agmueblescol</span> &bull; Cobertura en toda Colombia
                   </div>
                 </div>
 
@@ -1312,12 +1589,12 @@
                     Sistemas
                   </h4>
                   <ul className="space-y-2 text-gray-600">
-                    <li>SIS-01 &bull; Cocinas Monolith</li>
-                    <li>SIS-02 &bull; Panel & Consola Kanso</li>
-                    <li>SIS-03 &bull; Vestidor Lumina Fumé</li>
-                    <li>SIS-04 &bull; Mesa Escultórica Kyoto</li>
-                    <li>SIS-05 &bull; Aparador Alistonado Sabi</li>
-                    <li>SIS-06 &bull; Librero Studio 360</li>
+                    <li><button onClick={() => scrollTo('cat-cocina')} className="hover:text-black transition-colors">COC &bull; Cocinas de Autor</button></li>
+                    <li><button onClick={() => scrollTo('cat-baños')} className="hover:text-black transition-colors">BAN &bull; Muebles de Baño</button></li>
+                    <li><button onClick={() => scrollTo('cat-sala')} className="hover:text-black transition-colors">SAL &bull; Sala & Paneles TV</button></li>
+                    <li><button onClick={() => scrollTo('cat-comedores')} className="hover:text-black transition-colors">COM &bull; Comedores & Mesas</button></li>
+                    <li><button onClick={() => scrollTo('cat-varios')} className="hover:text-black transition-colors">VAR &bull; Vestieres & Bibliotecas</button></li>
+                    <li><button onClick={() => scrollTo('realidad-aumentada')} className="text-[#E0B605] font-bold hover:underline">3D &bull; Realidad Aumentada</button></li>
                   </ul>
                 </div>
 
@@ -1326,14 +1603,15 @@
                     Taller & Contacto
                   </h4>
                   <div className="space-y-2 text-gray-600">
-                    <p>WhatsApp: <strong className="text-[#2C2F34]">+57 300 000 0000</strong></p>
-                    <p>Correo: <strong className="text-[#2C2F34]">contacto@agmuebles.com</strong></p>
-                    <p>Horario: Lunes a Sábado 8:00 AM &ndash; 6:00 PM</p>
+                    <p>WhatsApp: <a href="https://wa.me/573183766891" target="_blank" rel="noopener noreferrer" className="text-[#2C2F34] font-bold hover:underline">+57 318 376 6891</a></p>
+                    <p>Instagram: <a href="https://www.instagram.com/agmueblescol/" target="_blank" rel="noopener noreferrer" className="text-[#2C2F34] font-bold hover:underline">@agmueblescol</a></p>
+                    <p>Facebook: <a href="https://www.facebook.com/agmueblescolombia/" target="_blank" rel="noopener noreferrer" className="text-[#2C2F34] font-bold hover:underline">fb.com/agmueblescolombia</a></p>
+                    <p>Trayectoria: <strong className="text-[#2C2F34]">16 Años de Experiencia</strong></p>
                     <button
                       onClick={() => setIsInquiryOpen(true)}
                       className="mt-3 inline-block bg-[#2C2F34] hover:bg-black text-[#F0D030] font-bold px-5 py-2.5 rounded-full uppercase tracking-wider text-[11px] transition-all hover:scale-105 shadow-sm"
                     >
-                      Solicitar Visita Técnica
+                      Solicitar Visita Técnica 3D
                     </button>
                   </div>
                 </div>
@@ -1473,7 +1751,7 @@
 
                 <div className="sticky bottom-0 bg-[#E9E7E2] p-6 border-t border-[#2C2F34]/15">
                   <a
-                    href={`https://wa.me/573000000000?text=${encodeURIComponent(
+                    href={`https://wa.me/573183766891?text=${encodeURIComponent(
                       `Hola AG Muebles, deseo solicitar cotización técnica formal para el sistema "${selectedProduct.name}" (Ref: ${selectedProduct.code}).`
                     )}`}
                     target="_blank"
@@ -1526,7 +1804,7 @@
                     const name = e.target.clientName.value;
                     const phone = e.target.clientPhone.value;
                     const project = e.target.projectType.value;
-                    const url = `https://wa.me/573000000000?text=${encodeURIComponent(
+                    const url = `https://wa.me/573183766891?text=${encodeURIComponent(
                       `Hola AG Muebles, deseo solicitar asesoría para un proyecto arquitectónico:\n- Nombre: ${name}\n- Teléfono: ${phone}\n- Tipo de Proyecto: ${project}`
                     )}`;
                     window.open(url, '_blank');
@@ -1551,7 +1829,7 @@
                       type="tel" 
                       name="clientPhone" 
                       required 
-                      placeholder="+57 300 000 0000" 
+                      placeholder="+57 318 376 6891" 
                       className="w-full px-4 py-2.5 rounded-lg border border-[#2C2F34]/25 bg-white focus:outline-none focus:border-[#2C2F34]"
                     />
                   </div>
@@ -1704,7 +1982,7 @@
                 {/* Filtros rápidos sugeridos */}
                 <div className="flex flex-wrap items-center gap-2 mb-6 text-xs font-mono">
                   <span className="text-gray-400 uppercase text-[10px] mr-1">Filtros:</span>
-                  {['Todos', 'Cocina', 'Nogal', 'Roble', 'Vestidor', 'Mesa', '3D / AR'].map(term => (
+                  {['Todos', 'Cocina', 'Baños', 'Sala', 'Comedores', 'Varios', '3D / AR'].map(term => (
                     <button
                       key={term}
                       onClick={() => setSearchQuery(term === 'Todos' ? '' : term)}
@@ -1728,6 +2006,8 @@
                       return (
                         item.name.toLowerCase().includes(q) ||
                         item.code.toLowerCase().includes(q) ||
+                        item.category.toLowerCase().includes(q) ||
+                        item.categoryLabel.toLowerCase().includes(q) ||
                         item.typology.toLowerCase().includes(q) ||
                         item.shortDesc.toLowerCase().includes(q) ||
                         item.materials.some(m => m.toLowerCase().includes(q))
@@ -1874,7 +2154,7 @@
               12. BOTÓN FLOTANTE WHATSAPP CON MICROINTERACCIÓN
              ========================================================================== */}
           <a
-            href="https://wa.me/573000000000?text=Hola%20AG%20Muebles,%20deseo%20asesoría%20para%20un%20proyecto%20arquitectónico."
+            href="https://wa.me/573183766891?text=Hola%20AG%20Muebles,%20deseo%20asesoría%20para%20un%20proyecto%20arquitectónico."
             target="_blank"
             rel="noopener noreferrer"
             className="fixed bottom-6 right-6 w-14 h-14 bg-[#2C2F34] hover:bg-black text-[#F0D030] rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-transform z-40 border border-white/20"
