@@ -1556,6 +1556,78 @@
                 </div>
               </div>
 
+              {/* MÓDULO INTERACTIVO DE MAPA GOOGLE MAPS */}
+              <div className="mt-16 bg-white/70 backdrop-blur-sm rounded-3xl border border-[#2C2F34]/20 p-6 sm:p-8 shadow-xl scroll-reveal">
+                <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-8 border-b border-[#2C2F34]/15 pb-4 gap-4">
+                  <div>
+                    <span className="text-xs font-mono uppercase tracking-widest text-[#E0B605] block mb-1 font-bold">
+                      [ UBICACIÓN // TALLER DE FABRICACIÓN ]
+                    </span>
+                    <h3 className="text-2xl sm:text-3xl font-bold uppercase tracking-tight text-[#2C2F34]">
+                      Visítanos en Kennedy Cervantes, Bogotá
+                    </h3>
+                  </div>
+                  <div className="flex flex-wrap items-center gap-3">
+                    <a
+                      href="https://www.google.com/maps/place/Ag+muebles/@4.6222175,-74.1427947,17z/data=!4m15!1m8!3m7!1s0x8e3f9f06f52b7bc3:0x41b2dac52b188011!2sAg+muebles!8m2!3d4.6222244!4d-74.1427471!10e5!16s%2Fg%2F11xrzj64x6!3m5!1s0x8e3f9f06f52b7bc3:0x41b2dac52b188011!8m2!3d4.6222244!4d-74.1427471!16s%2Fg%2F11xrzj64x6?entry=ttu"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 bg-[#2C2F34] hover:bg-black text-[#F0D030] text-xs font-mono uppercase tracking-wider px-4 py-2.5 rounded-full transition-all shadow-sm hover:scale-105"
+                    >
+                      <span>🗺️</span>
+                      <span>Abrir en Google Maps / Waze</span>
+                    </a>
+                    <a
+                      href="https://wa.me/573183766891?text=Hola%20AG%20Muebles,%20deseo%20visitar%20el%20taller%20en%20Kennedy%20Cervantes."
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 border border-[#2C2F34] hover:bg-[#2C2F34] hover:text-white text-[#2C2F34] text-xs font-mono uppercase tracking-wider px-4 py-2.5 rounded-full transition-all"
+                    >
+                      <span>💬</span>
+                      <span>Agendar Cita en Taller</span>
+                    </a>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+                  {/* Ficha técnica de ubicación */}
+                  <div className="lg:col-span-4 bg-[#E9E7E2]/70 rounded-2xl p-6 border border-[#2C2F34]/15 flex flex-col justify-between space-y-4">
+                    <div className="space-y-3">
+                      <div>
+                        <span className="text-[10px] font-mono text-gray-400 uppercase block">Punto Físico Oficial:</span>
+                        <strong className="text-base text-[#2C2F34] block">AG Muebles &bull; Aroldo Guerrero</strong>
+                        <p className="text-xs font-mono text-gray-700 mt-1 font-semibold">Calle 5 Sur # 73-64, Kennedy Cervantes, Bogotá</p>
+                      </div>
+                      <div className="pt-2 border-t border-[#2C2F34]/10 text-xs font-mono text-gray-600 space-y-1">
+                        <p>Horario: <strong className="text-[#2C2F34]">Lun &ndash; Sáb: 8:00 AM &ndash; 6:00 PM</strong></p>
+                        <p>Línea WhatsApp: <strong className="text-[#2C2F34]">+57 318 376 6891</strong></p>
+                        <p>Correo: <strong className="text-[#2C2F34]">agmueblesar@gmail.com</strong></p>
+                        <p>Trayectoria: <strong className="text-[#2C2F34]">16 Años de Experiencia</strong></p>
+                      </div>
+                    </div>
+
+                    <div className="text-[11px] font-mono text-gray-600 border-t border-[#2C2F34]/10 pt-3">
+                      ✓ Atención personalizada a arquitectos, interioristas y familias con cita previa en taller.
+                    </div>
+                  </div>
+
+                  {/* Mapa Interactivo Google Maps */}
+                  <div className="lg:col-span-8 rounded-2xl overflow-hidden border border-[#2C2F34]/20 shadow-md min-h-[350px] bg-gray-200 relative">
+                    <iframe
+                      title="Ubicación Ag Muebles - Taller Bogotá"
+                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3976.920831006509!2d-74.145322!3d4.6222244!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3f9f06f52b7bc3%3A0x41b2dac52b188011!2sAg%20muebles!5e0!3m2!1ses!2sco!4v1729440000000!5m2!1ses!2sco"
+                      width="100%"
+                      height="100%"
+                      style={{ border: 0, minHeight: '350px' }}
+                      allowFullScreen=""
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                      className="w-full h-full filter contrast-[1.02]"
+                    ></iframe>
+                  </div>
+                </div>
+              </div>
+
               <div className="mt-16 text-center scroll-reveal">
                 <button
                   onClick={() => setIsInquiryOpen(true)}
@@ -1603,7 +1675,7 @@
                     Taller & Contacto
                   </h4>
                   <div className="space-y-2 text-gray-600">
-                    <p>Dirección: <a href="https://maps.google.com/?q=Calle+5+Sur+%23+73-64+Bogota+Colombia" target="_blank" rel="noopener noreferrer" className="text-[#2C2F34] font-bold hover:underline">Calle 5 Sur # 73-64, Kennedy Cervantes, Bogotá</a></p>
+                    <p>Dirección: <a href="https://www.google.com/maps/place/Ag+muebles/@4.6222175,-74.1427947,17z/data=!4m15!1m8!3m7!1s0x8e3f9f06f52b7bc3:0x41b2dac52b188011!2sAg+muebles!8m2!3d4.6222244!4d-74.1427471!10e5!16s%2Fg%2F11xrzj64x6!3m5!1s0x8e3f9f06f52b7bc3:0x41b2dac52b188011!8m2!3d4.6222244!4d-74.1427471!16s%2Fg%2F11xrzj64x6?entry=ttu" target="_blank" rel="noopener noreferrer" className="text-[#2C2F34] font-bold hover:underline">Calle 5 Sur # 73-64, Kennedy Cervantes, Bogotá</a></p>
                     <p>WhatsApp: <a href="https://wa.me/573183766891" target="_blank" rel="noopener noreferrer" className="text-[#2C2F34] font-bold hover:underline">+57 318 376 6891</a></p>
                     <p>Correo: <a href="mailto:agmueblesar@gmail.com" className="text-[#2C2F34] font-bold hover:underline">agmueblesar@gmail.com</a></p>
                     <p>Instagram: <a href="https://www.instagram.com/agmueblescol/" target="_blank" rel="noopener noreferrer" className="text-[#2C2F34] font-bold hover:underline">@agmueblescol</a></p>
