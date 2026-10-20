@@ -586,6 +586,25 @@
       const [searchQuery, setSearchQuery] = useState('');
       const [isQrModalOpen, setIsQrModalOpen] = useState(false);
       const [active3dFinish, setActive3dFinish] = useState('natural'); // 'natural' | 'nogal' | 'carbon'
+      const [selected3dSource, setSelected3dSource] = useState('stock'); // 'stock' | 'taller'
+
+      const stockModelUrl = 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/SheenChair/glTF-Binary/SheenChair.glb';
+      const tallerModelUrl = 'assets/models/silla-autor.glb';
+      const active3dModelUrl = selected3dSource === 'stock' ? stockModelUrl : tallerModelUrl;
+
+      const handleLaunchAR = () => {
+        const viewer = document.getElementById('ag-model-viewer');
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        if (isMobile && viewer && typeof viewer.activateAR === 'function') {
+          try {
+            viewer.activateAR();
+            return;
+          } catch (err) {
+            console.warn('activateAR fallback:', err);
+          }
+        }
+        setIsQrModalOpen(true);
+      };
 
       // Cierre con la tecla Escape y atajo Cmd+K / Ctrl+K para buscar
       useEffect(() => {
@@ -670,18 +689,22 @@
       ];
 
       const scrollTo = (id) => {
-        if (id.startsWith('cat-')) {
-          const cat = id.replace('cat-', '');
-          setSelectedCategory(cat);
-          document.getElementById('sistemas')?.scrollIntoView({ behavior: 'smooth' });
-        } else if (id === 'index-view') {
-          setViewMode('index');
-          document.getElementById('sistemas')?.scrollIntoView({ behavior: 'smooth' });
-        } else if (id === 'inquiry') {
-          setIsInquiryOpen(true);
-        } else {
-          document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-        }
+        setIsNavOpen(false);
+        setTimeout(() => {
+          if (id.startsWith('cat-')) {
+            const cat = id.replace('cat-', '');
+            setSelectedCategory(cat);
+            document.getElementById('sistemas')?.scrollIntoView({ behavior: 'smooth' });
+          } else if (id === 'index-view') {
+            setViewMode('index');
+            document.getElementById('sistemas')?.scrollIntoView({ behavior: 'smooth' });
+          } else if (id === 'inquiry') {
+            setIsInquiryOpen(true);
+          } else {
+            const el = document.getElementById(id);
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+          }
+        }, 120);
       };
 
       return (
@@ -740,9 +763,10 @@
               {/* Izquierda: Disparador del Menú Overlay */}
               <button
                 onClick={() => setIsNavOpen(true)}
-                className="group flex items-center gap-2.5 text-xs font-mono uppercase tracking-widest text-[#2C2F34] py-2"
+                className="group flex items-center gap-2.5 text-xs font-mono uppercase tracking-widest text-[#2C2F34] py-2.5 px-2 rounded-xl hover:bg-black/5 active:scale-95 transition-all touch-manipulation cursor-pointer"
+                aria-label="Abrir Menú"
               >
-                <span className="w-6 h-6 rounded-full border border-[#2C2F34] flex items-center justify-center text-xs group-hover:bg-[#2C2F34] group-hover:text-white transition-all">
+                <span className="w-7 h-7 rounded-full border border-[#2C2F34] flex items-center justify-center text-sm font-bold group-hover:bg-[#2C2F34] group-hover:text-white transition-all bg-white/60">
                   +
                 </span>
                 <span className="font-bold underline-offset-4 group-hover:underline">Menú</span>
@@ -823,85 +847,6 @@
             </div>
           </header>
 
-          {/* ==========================================================================
-              3. NAVEGADOR A PANTALLA COMPLETA CON PREVIEW HOVER (FULL-SCREEN OVERLAY)
-             ========================================================================== */}
-          {isNavOpen && (
-            <div className="fixed inset-0 z-50 bg-[#2C2F34] text-[#E9E7E2] flex flex-col justify-between p-6 sm:p-12 overflow-y-auto animate-fadeIn">
-              <div className="flex items-center justify-between border-b border-white/10 pb-6">
-                <div className="flex items-center gap-3">
-                  <img src="assets/logo-dark.png" alt="AG MUEBLES" className="h-8 sm:h-10 w-auto" />
-                  <span className="text-xs font-mono uppercase tracking-widest text-gray-400 hidden sm:inline">
-                    // Navegación Arquitectónica
-                  </span>
-                </div>
-                <button
-                  onClick={() => setIsNavOpen(false)}
-                  className="group flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-[#E9E7E2] hover:text-[#F0D030]"
-                >
-                  <span className="w-7 h-7 rounded-full border border-white/20 flex items-center justify-center group-hover:border-[#F0D030]">
-                    &times;
-                  </span>
-                  <span>Cerrar</span>
-                </button>
-              </div>
-
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 my-auto py-10 items-center">
-                <div className="lg:col-span-7 space-y-4 sm:space-y-6">
-                  {navItems.map(item => (
-                    <div
-                      key={item.num}
-                      onMouseEnter={() => setNavHoverImage(item.img)}
-                      onClick={() => {
-                        scrollTo(item.target);
-                        setIsNavOpen(false);
-                      }}
-                      className="group cursor-pointer flex items-baseline gap-4 sm:gap-6 border-b border-white/5 pb-3 transition-colors"
-                    >
-                      <span className="text-xs sm:text-sm font-mono text-[#F0D030] tracking-wider">
-                        {item.num}
-                      </span>
-                      <div className="flex-1">
-                        <h3 className="text-3xl sm:text-5xl lg:text-6xl font-light tracking-tight uppercase group-hover:text-[#F0D030] group-hover:translate-x-2 transition-all">
-                          {item.title}
-                        </h3>
-                      </div>
-                      <span className="text-xl text-gray-500 group-hover:text-[#F0D030] transition-colors">
-                        &rarr;
-                      </span>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="hidden lg:block lg:col-span-5 pl-8">
-                  <div className="aspect-[4/5] rounded-2xl overflow-hidden bg-black/40 border border-white/10 relative shadow-2xl">
-                    <img 
-                      src={navHoverImage} 
-                      alt="Vista previa" 
-                      className="w-full h-full object-cover transition-all duration-700 filter brightness-90"
-                    />
-                    <div className="absolute bottom-4 left-4 right-4 bg-black/60 backdrop-blur-md p-3 rounded-xl border border-white/10 text-xs font-mono">
-                      <span className="text-[#F0D030] block">TALLER AG &bull; ARCHIVO</span>
-                      <span className="text-gray-300">Bogotá &bull; Fabricación 100% a Medida</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs font-mono text-gray-400 gap-4">
-                <span>FUNDADO EN 2026 &bull; SISTEMAS ARQUITECTÓNICOS AROLDO GUERRERO</span>
-                <div className="flex items-center gap-6">
-                  <a href="https://www.instagram.com/agmueblescol/" target="_blank" className="hover:text-[#F0D030]">
-                    Instagram: @agmueblescol
-                  </a>
-                  <span>|</span>
-                  <a href="tel:+573183766891" className="hover:text-[#F0D030]">
-                    +57 318 376 6891
-                  </a>
-                </div>
-              </div>
-            </div>
-          )}
 
           {/* ==========================================================================
               4. HERO EDITORIAL CON REVELACIÓN TIPOGRÁFICA Y ZOOM
@@ -1277,6 +1222,20 @@
                       </span>
                     </div>
 
+                    {/* Tarjeta de Referencia Fotográfica de Stock para pruebas de escala */}
+                    <div className="flex items-center gap-3.5 p-3.5 bg-white/85 rounded-2xl border border-[#2C2F34]/15 shadow-sm">
+                      <img 
+                        src="https://images.unsplash.com/photo-1592078615290-033ee584e267?auto=format&fit=crop&w=300&q=80" 
+                        alt="Foto Stock Silla de Autor" 
+                        className="w-16 h-16 object-cover rounded-xl border border-[#2C2F34]/20 shadow-sm flex-shrink-0"
+                      />
+                      <div className="text-xs font-mono">
+                        <span className="text-[10px] uppercase text-[#E0B605] font-bold block">// Imagen de Stock Verificada</span>
+                        <strong className="text-[#2C2F34] text-sm block font-bold">Silla Escultórica en Roble</strong>
+                        <span className="text-[10px] text-gray-500 block">Referencia visual de alta fidelidad para prueba AR</span>
+                      </div>
+                    </div>
+
                     <div className="space-y-3 text-xs font-mono">
                       <div className="flex justify-between py-1 border-b border-[#2C2F34]/5">
                         <span className="text-gray-500">Escala en Espacio:</span>
@@ -1296,8 +1255,37 @@
                       </div>
                     </div>
 
+                    {/* Selector de Modelo para Pruebas (Stock vs Taller) */}
+                    <div className="pt-1">
+                      <label className="text-[11px] font-mono uppercase tracking-wider text-gray-500 block mb-2">
+                        Fuente de Modelo 3D:
+                      </label>
+                      <div className="grid grid-cols-2 gap-2">
+                        <button
+                          onClick={() => setSelected3dSource('stock')}
+                          className={`px-3 py-2.5 rounded-lg text-xs font-mono uppercase tracking-wider text-center border transition-all ${
+                            selected3dSource === 'stock'
+                              ? 'bg-[#2C2F34] text-[#F0D030] border-[#2C2F34] font-bold shadow-sm'
+                              : 'bg-white/80 border-[#2C2F34]/20 text-[#2C2F34] hover:border-[#2C2F34]'
+                          }`}
+                        >
+                          ✓ Modelo Stock AR
+                        </button>
+                        <button
+                          onClick={() => setSelected3dSource('taller')}
+                          className={`px-3 py-2.5 rounded-lg text-xs font-mono uppercase tracking-wider text-center border transition-all ${
+                            selected3dSource === 'taller'
+                              ? 'bg-[#2C2F34] text-[#F0D030] border-[#2C2F34] font-bold shadow-sm'
+                              : 'bg-white/80 border-[#2C2F34]/20 text-[#2C2F34] hover:border-[#2C2F34]'
+                          }`}
+                        >
+                          Modelo Taller AG
+                        </button>
+                      </div>
+                    </div>
+
                     {/* Acabados de Madera interactivos */}
-                    <div className="pt-2">
+                    <div className="pt-1">
                       <label className="text-[11px] font-mono uppercase tracking-wider text-gray-500 block mb-2">
                         Acabado de Taller Seleccionado:
                       </label>
@@ -1338,11 +1326,11 @@
                     {/* Botones de Acción */}
                     <div className="pt-2 space-y-2.5">
                       <button
-                        onClick={() => setIsQrModalOpen(true)}
-                        className="w-full bg-[#2C2F34] hover:bg-black text-[#F0D030] text-xs font-mono uppercase tracking-widest py-4 px-6 rounded-xl flex items-center justify-center gap-3 transition-all shadow-md hover:scale-[1.02]"
+                        onClick={handleLaunchAR}
+                        className="w-full bg-[#2C2F34] hover:bg-black text-[#F0D030] text-xs font-mono uppercase tracking-widest py-4 px-6 rounded-xl flex items-center justify-center gap-3 transition-all shadow-md hover:scale-[1.02] active:scale-95 cursor-pointer touch-manipulation"
                       >
-                        <span className="text-base">👁️</span>
-                        <span>Proyectar en tu Espacio (AR)</span>
+                        <span className="text-lg">📱</span>
+                        <span className="font-bold">Ver en Realidad Aumentada (AR)</span>
                       </button>
 
                       <a
@@ -1373,11 +1361,16 @@
                     </div>
 
                     {/* Componente Google Model Viewer */}
-                    <div className="w-full h-[460px] sm:h-[540px] flex items-center justify-center">
+                    <div className="relative w-full h-[460px] sm:h-[540px] flex items-center justify-center">
                       <model-viewer
-                        src="assets/models/silla-autor.glb"
+                        id="ag-model-viewer"
+                        src={active3dModelUrl}
+                        poster="https://images.unsplash.com/photo-1592078615290-033ee584e267?auto=format&fit=crop&w=1200&q=85"
+                        loading="eager"
+                        reveal="auto"
                         ar
                         ar-modes="webxr scene-viewer quick-look"
+                        ar-scale="auto"
                         camera-controls
                         touch-action="pan-y"
                         auto-rotate
@@ -1388,15 +1381,27 @@
                         alt="Modelo 3D de Mobiliario Arquitectónico AG Muebles"
                         style={{ width: '100%', height: '100%', backgroundColor: 'transparent' }}
                       >
-                        {/* Botón flotante AR nativo para móviles */}
+                        {/* Botón flotante nativo de Model Viewer */}
                         <button
                           slot="ar-button"
-                          className="absolute bottom-6 right-6 bg-[#2C2F34] hover:bg-black text-[#F0D030] font-mono text-xs uppercase tracking-wider px-5 py-3 rounded-full shadow-2xl flex items-center gap-2 border border-[#F0D030]/40 transition-transform active:scale-95"
+                          className="bg-[#2C2F34] hover:bg-black text-[#F0D030] font-mono text-xs uppercase tracking-wider px-5 py-3 rounded-full shadow-2xl flex items-center gap-2 border border-[#F0D030]/60 transition-transform active:scale-95"
                         >
                           <span>📱</span>
-                          <span>Abrir Cámara AR (Móvil)</span>
+                          <span>Abrir Cámara AR</span>
                         </button>
                       </model-viewer>
+
+                      {/* Botón Permanente para Móviles (Siempre visible y funcional) */}
+                      <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 z-20">
+                        <button
+                          onClick={handleLaunchAR}
+                          className="bg-[#2C2F34] hover:bg-black text-[#F0D030] font-mono text-xs uppercase tracking-wider px-5 py-3.5 rounded-full shadow-2xl flex items-center gap-2.5 border-2 border-[#F0D030] active:scale-95 transition-all cursor-pointer touch-manipulation hover:scale-105"
+                          title="Abrir Cámara AR en el celular"
+                        >
+                          <span className="text-base animate-pulse">📱</span>
+                          <span className="font-bold">Ver en Cámara AR</span>
+                        </button>
+                      </div>
                     </div>
 
                     {/* Leyenda de interacción */}
@@ -1406,7 +1411,7 @@
                         <span>Motor WebXR / Quick Look Activo</span>
                       </div>
                       <div className="text-gray-500">
-                        Arrastra para rotar • Rueda o pellizco para zoom
+                        Arrastra para rotar • Pellizco para zoom
                       </div>
                     </div>
 
@@ -1699,6 +1704,84 @@
             </div>
           </footer>
         </div>
+
+          {/* ==========================================================================
+              3. NAVEGADOR A PANTALLA COMPLETA CON PREVIEW HOVER (FULL-SCREEN OVERLAY)
+             ========================================================================== */}
+          {isNavOpen && (
+            <div className="fixed inset-0 z-[100] bg-[#2C2F34] text-[#E9E7E2] flex flex-col justify-between p-6 sm:p-12 overflow-y-auto animate-fadeIn touch-manipulation">
+              <div className="flex items-center justify-between border-b border-white/10 pb-6">
+                <div className="flex items-center gap-3">
+                  <img src="assets/logo-dark.png" alt="AG MUEBLES" className="h-8 sm:h-10 w-auto" />
+                  <span className="text-xs font-mono uppercase tracking-widest text-gray-400 hidden sm:inline">
+                    // Navegación Arquitectónica
+                  </span>
+                </div>
+                <button
+                  onClick={() => setIsNavOpen(false)}
+                  className="group flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-[#E9E7E2] hover:text-[#F0D030] p-2 rounded-lg cursor-pointer touch-manipulation"
+                  aria-label="Cerrar Menú"
+                >
+                  <span className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-lg group-hover:border-[#F0D030] bg-white/5">
+                    &times;
+                  </span>
+                  <span>Cerrar</span>
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 my-auto py-8 sm:py-10 items-center">
+                <div className="lg:col-span-7 space-y-3 sm:space-y-6">
+                  {navItems.map(item => (
+                    <div
+                      key={item.num}
+                      onMouseEnter={() => setNavHoverImage(item.img)}
+                      onClick={() => scrollTo(item.target)}
+                      className="group cursor-pointer flex items-baseline gap-4 sm:gap-6 border-b border-white/5 pb-3 transition-colors active:opacity-70 touch-manipulation py-1"
+                    >
+                      <span className="text-xs sm:text-sm font-mono text-[#F0D030] tracking-wider">
+                        {item.num}
+                      </span>
+                      <div className="flex-1">
+                        <h3 className="text-2xl sm:text-5xl lg:text-6xl font-light tracking-tight uppercase group-hover:text-[#F0D030] group-hover:translate-x-2 transition-all">
+                          {item.title}
+                        </h3>
+                      </div>
+                      <span className="text-xl text-gray-500 group-hover:text-[#F0D030] transition-colors">
+                        &rarr;
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="hidden lg:block lg:col-span-5 pl-8">
+                  <div className="aspect-[4/5] rounded-2xl overflow-hidden bg-black/40 border border-white/10 relative shadow-2xl">
+                    <img 
+                      src={navHoverImage} 
+                      alt="Vista previa" 
+                      className="w-full h-full object-cover transition-all duration-700 filter brightness-90"
+                    />
+                    <div className="absolute bottom-4 left-4 right-4 bg-black/60 backdrop-blur-md p-3 rounded-xl border border-white/10 text-xs font-mono">
+                      <span className="text-[#F0D030] block">TALLER AG &bull; ARCHIVO</span>
+                      <span className="text-gray-300">Bogotá &bull; Fabricación 100% a Medida</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs font-mono text-gray-400 gap-4">
+                <span>16 AÑOS DE EXPERIENCIA &bull; SISTEMAS ARQUITECTÓNICOS AROLDO GUERRERO</span>
+                <div className="flex items-center gap-6">
+                  <a href="https://www.instagram.com/agmueblescol/" target="_blank" className="hover:text-[#F0D030]">
+                    Instagram: @agmueblescol
+                  </a>
+                  <span>|</span>
+                  <a href="tel:+573183766891" className="hover:text-[#F0D030]">
+                    +57 318 376 6891
+                  </a>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* ==========================================================================
               9. FICHA TÉCNICA DESPLEGABLE LATERAL (SLIDE-OUT DRAWER)
@@ -2193,9 +2276,24 @@
                 <h3 className="text-2xl font-bold uppercase tracking-tight mb-2">
                   Ver en tu Espacio
                 </h3>
-                <p className="text-xs font-mono text-gray-600 mb-6 uppercase">
+                <p className="text-xs font-mono text-gray-600 mb-4 uppercase">
                   Apunta con la cámara de tu iPhone o Android a este código para proyectar la pieza sobre el suelo en escala real 1:1.
                 </p>
+
+                {/* Botón directo si el usuario está navegando desde el celular */}
+                <button
+                  onClick={() => {
+                    setIsQrModalOpen(false);
+                    const viewer = document.getElementById('ag-model-viewer');
+                    if (viewer && typeof viewer.activateAR === 'function') {
+                      try { viewer.activateAR(); } catch(e) { console.warn(e); }
+                    }
+                  }}
+                  className="w-full bg-[#2C2F34] hover:bg-black text-[#F0D030] text-xs font-mono uppercase tracking-widest py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 mb-5 shadow-lg border border-[#F0D030]/50 font-bold active:scale-95 transition-all touch-manipulation cursor-pointer"
+                >
+                  <span className="text-base">📱</span>
+                  <span>Abrir Cámara AR Directamente</span>
+                </button>
 
                 <div className="bg-white p-5 rounded-2xl inline-block shadow-lg border border-[#2C2F34]/10 mb-6">
                   <img
