@@ -591,6 +591,7 @@
       const [isSearchOpen, setIsSearchOpen] = useState(false);
       const [searchQuery, setSearchQuery] = useState('');
       const [isQrModalOpen, setIsQrModalOpen] = useState(false);
+      const [arProduct, setArProduct] = useState(null); // Producto visualizándose en Realidad Aumentada
       const [active3dFinish, setActive3dFinish] = useState('natural'); // 'natural' | 'nogal' | 'carbon'
       const [selected3dSource, setSelected3dSource] = useState('stock'); // 'stock' | 'taller'
 
@@ -620,7 +621,8 @@
             setIsSearchOpen(prev => !prev);
           }
           if (e.key === 'Escape') {
-            if (isSearchOpen) setIsSearchOpen(false);
+            if (arProduct) setArProduct(null);
+            else if (isSearchOpen) setIsSearchOpen(false);
             else if (isQrModalOpen) setIsQrModalOpen(false);
             else if (lightboxImage) setLightboxImage(null);
             else if (selectedProduct) setSelectedProduct(null);
@@ -630,7 +632,7 @@
         };
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
-      }, [isSearchOpen, isQrModalOpen, lightboxImage, selectedProduct, isInquiryOpen, isNavOpen]);
+      }, [isSearchOpen, isQrModalOpen, lightboxImage, selectedProduct, isInquiryOpen, isNavOpen, arProduct]);
 
       // 1. ANIMACIÓN ICÓNICA: PRIMERO EL LOGO SOBRE AMARILLO Y DESPUÉS LA PÁGINA QUE SE AGRANDA
       const [showLogoIntro, setShowLogoIntro] = useState(true);
@@ -1050,6 +1052,14 @@
                                 className="flex-1 bg-[#2C2F34] hover:bg-black text-[#E9E7E2] hover:text-[#F0D030] text-xs font-mono uppercase tracking-widest py-3.5 px-4 rounded-full transition-all text-center font-bold"
                               >
                                 Ver Ficha Técnica &rarr;
+                              </button>
+                              <button
+                                onClick={() => setArProduct(item)}
+                                className="bg-white hover:bg-[#2C2F34] text-[#2C2F34] hover:text-[#F0D030] border border-[#2C2F34]/30 text-xs font-mono uppercase tracking-wider py-3.5 px-3.5 sm:px-4 rounded-full transition-all flex items-center justify-center gap-1.5 shadow-sm font-bold"
+                                title="Ver en tu casa con Realidad Aumentada (AR)"
+                              >
+                                <span>📱</span>
+                                <span className="hidden sm:inline text-[11px]">En tu casa</span>
                               </button>
                               <button
                                 onClick={() => {
@@ -1741,23 +1751,36 @@
                     </p>
                   </div>
 
-                  {/* Banner de Cotización Inmediata para este Producto */}
-                  <div className="bg-white/90 border-2 border-[#2C2F34] rounded-2xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">
-                    <div>
-                      <span className="text-[11px] font-mono text-[#E0B605] font-bold uppercase tracking-wider block">
-                        // Cotización a tu Espacio
+                  {/* Botón de Realidad Aumentada & Cotización para este Producto */}
+                  <div className="bg-white/95 border-2 border-[#2C2F34] rounded-2xl p-5 shadow-sm space-y-3.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-mono text-[#E0B605] font-bold uppercase tracking-wider flex items-center gap-1.5">
+                        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        // Realidad Aumentada & Escala 1:1
                       </span>
-                      <h4 className="text-sm sm:text-base font-bold text-[#2C2F34] uppercase tracking-tight">
-                        Fabricación 100% Personalizada
-                      </h4>
-                      <p className="text-xs font-mono text-gray-600 mt-0.5">
-                        Toma de medidas en Bogotá y planos 3D sin costo adicional.
-                      </p>
+                      <span className="bg-[#2C2F34] text-[#F0D030] text-[10px] font-mono px-2 py-0.5 rounded font-bold uppercase">
+                        En tu espacio
+                      </span>
                     </div>
-                    <div className="flex items-center gap-2 w-full sm:w-auto shrink-0">
+
+                    <p className="text-xs font-mono text-gray-700">
+                      Proyecta este mueble sobre el suelo de tu casa u oficina a escala real 1:1 antes de fabricarlo.
+                    </p>
+
+                    {/* BOTÓN PRINCIPAL: VER ESTE ARTÍCULO EN TU CASA */}
+                    <button
+                      onClick={() => setArProduct(selectedProduct)}
+                      className="w-full bg-[#F0D030] hover:bg-[#ffe247] text-[#2C2F34] font-mono text-xs sm:text-sm font-bold uppercase tracking-wider py-4 px-5 rounded-xl flex items-center justify-center gap-2.5 shadow-md border-2 border-[#2C2F34] transition-all hover:scale-[1.02] active:scale-95 cursor-pointer touch-manipulation"
+                    >
+                      <span className="text-lg">📱</span>
+                      <span>Ver este artículo en tu casa</span>
+                      <span className="text-xs font-bold font-mono">&rarr;</span>
+                    </button>
+
+                    <div className="flex items-center gap-2 pt-1 border-t border-[#2C2F34]/10">
                       <button
                         onClick={() => setIsInquiryOpen(true)}
-                        className="flex-1 sm:flex-none bg-[#2C2F34] hover:bg-black text-[#F0D030] font-mono text-xs uppercase tracking-wider px-4 py-2.5 rounded-xl font-bold transition-all text-center shadow-md hover:scale-105"
+                        className="flex-1 bg-[#2C2F34] hover:bg-black text-[#F0D030] font-mono text-xs uppercase tracking-wider py-2.5 px-3 rounded-lg font-bold transition-all text-center"
                       >
                         Cotizar Mueble
                       </button>
@@ -1767,10 +1790,10 @@
                         )}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="bg-emerald-600 hover:bg-emerald-700 text-white font-mono text-xs uppercase tracking-wider px-3 py-2.5 rounded-xl transition-all flex items-center justify-center gap-1 font-bold shadow-md"
+                        className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-mono text-xs uppercase tracking-wider py-2.5 px-3 rounded-lg font-bold transition-all flex items-center justify-center gap-1.5"
                         title="Cotizar directamente por WhatsApp"
                       >
-                        <span>WhatsApp</span>
+                        <span>WhatsApp Directo</span>
                       </a>
                     </div>
                   </div>
@@ -1892,10 +1915,12 @@
                     // Contacto con el Taller
                   </span>
                   <h3 className="text-2xl font-bold uppercase tracking-tight text-[#2C2F34]">
-                    Iniciar Proyecto a Medida
+                    {selectedProduct ? `Cotizar ${selectedProduct.name}` : 'Iniciar Proyecto a Medida'}
                   </h3>
                   <p className="text-xs font-mono text-gray-600 mt-1">
-                    Agenda la toma de medidas o envía tus planos arquitectónicos para renderizado 3D sin costo.
+                    {selectedProduct 
+                      ? `Ref: ${selectedProduct.code} • ${selectedProduct.typology}. Fabricación 100% personalizada.`
+                      : 'Agenda la toma de medidas o envía tus planos arquitectónicos para renderizado 3D sin costo.'}
                   </p>
                 </div>
 
@@ -1905,8 +1930,9 @@
                     const name = e.target.clientName.value;
                     const phone = e.target.clientPhone.value;
                     const project = e.target.projectType.value;
+                    const itemRef = selectedProduct ? `\n- Referencia: ${selectedProduct.name} (${selectedProduct.code})` : '';
                     const url = `https://wa.me/573183766891?text=${encodeURIComponent(
-                      `Hola AG Muebles, deseo solicitar asesoría para un proyecto arquitectónico:\n- Nombre: ${name}\n- Teléfono: ${phone}\n- Tipo de Proyecto: ${project}`
+                      `Hola AG Muebles, deseo solicitar asesoría para cotizar:\n- Nombre: ${name}\n- Teléfono: ${phone}\n- Espacio: ${project}${itemRef}`
                     )}`;
                     window.open(url, '_blank');
                     setIsInquiryOpen(false);
@@ -2264,6 +2290,149 @@
                   <p className="text-[10px] text-gray-500">
                     Compatible con iOS (Safari Quick Look) y Android (Google Scene Viewer).
                   </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* ==========================================================================
+              MODAL DE REALIDAD AUMENTADA & VISOR 3D PARA EL MUEBLE SELECCIONADO
+              ("Ver este artículo en tu casa" con Cotizar y WhatsApp)
+             ========================================================================== */}
+          {arProduct && (
+            <div 
+              className="fixed inset-0 z-[110] bg-[#2C2F34]/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 animate-fadeIn"
+              onClick={() => setArProduct(null)}
+            >
+              <div 
+                className="bg-[#E9E7E2] w-full max-w-2xl rounded-3xl p-5 sm:p-7 text-[#2C2F34] shadow-2xl border border-[#2C2F34]/20 relative animate-slideDown flex flex-col max-h-[92vh] overflow-y-auto cursor-default"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Cabecera del visor AR */}
+                <div className="flex items-center justify-between border-b border-[#2C2F34]/15 pb-4 mb-4">
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs font-mono bg-[#2C2F34] text-[#F0D030] px-2.5 py-0.5 rounded font-bold">
+                      {arProduct.code}
+                    </span>
+                    <div>
+                      <h3 className="text-base sm:text-lg font-bold uppercase tracking-tight text-[#2C2F34] leading-tight">
+                        {arProduct.name}
+                      </h3>
+                      <span className="text-[11px] font-mono text-gray-500 uppercase">
+                        Realidad Aumentada & Escala Real 1:1
+                      </span>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setArProduct(null)}
+                    className="w-9 h-9 rounded-full border border-[#2C2F34]/30 flex items-center justify-center hover:bg-[#2C2F34] hover:text-white transition-colors text-lg"
+                    title="Cerrar visor AR (Esc)"
+                  >
+                    &times;
+                  </button>
+                </div>
+
+                {/* Escenario 3D interactivo con Google Model Viewer */}
+                <div className="relative rounded-2xl overflow-hidden border border-[#2C2F34]/20 bg-gradient-to-b from-[#F4F3EF] to-[#DFDCD5] shadow-inner mb-4 h-[320px] sm:h-[380px] flex items-center justify-center">
+                  <div className="absolute top-3 left-3 right-3 z-10 flex items-center justify-between pointer-events-none">
+                    <span className="bg-[#2C2F34]/85 backdrop-blur-md text-white text-[10px] font-mono px-3 py-1 rounded-full uppercase tracking-wider shadow">
+                      // Rotación 360° • Zoom
+                    </span>
+                    <span className="bg-[#F0D030] text-[#2C2F34] font-bold text-[10px] font-mono px-2.5 py-1 rounded-full uppercase tracking-wider shadow">
+                      Escala 1:1 AR
+                    </span>
+                  </div>
+
+                  <model-viewer
+                    id="ar-product-modal-viewer"
+                    src={stockModelUrl}
+                    poster={arProduct.primaryImage}
+                    loading="eager"
+                    reveal="auto"
+                    ar
+                    ar-modes="webxr scene-viewer quick-look"
+                    ar-scale="auto"
+                    camera-controls
+                    touch-action="pan-y"
+                    auto-rotate
+                    rotation-per-second="22deg"
+                    shadow-intensity="1.5"
+                    shadow-softness="0.8"
+                    alt={`Modelo 3D de ${arProduct.name}`}
+                    style={{ width: '100%', height: '100%', backgroundColor: 'transparent' }}
+                  >
+                    <button
+                      slot="ar-button"
+                      className="bg-[#2C2F34] hover:bg-black text-[#F0D030] font-mono text-xs uppercase tracking-wider px-5 py-3 rounded-full shadow-2xl flex items-center gap-2 border border-[#F0D030]/60 transition-transform active:scale-95"
+                    >
+                      <span>📱</span>
+                      <span>Ver en Cámara AR</span>
+                    </button>
+                  </model-viewer>
+
+                  {/* Botón flotante para dispositivos móviles */}
+                  <div className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 z-20">
+                    <button
+                      onClick={() => {
+                        const viewer = document.getElementById('ar-product-modal-viewer');
+                        if (viewer && typeof viewer.activateAR === 'function') {
+                          try { viewer.activateAR(); } catch(err) { console.warn('activateAR:', err); }
+                        }
+                      }}
+                      className="bg-[#2C2F34] hover:bg-black text-[#F0D030] font-mono text-xs uppercase tracking-wider px-4 sm:px-5 py-2.5 sm:py-3 rounded-full shadow-2xl flex items-center gap-2 border-2 border-[#F0D030] active:scale-95 transition-all cursor-pointer touch-manipulation hover:scale-105"
+                      title="Abrir Cámara AR"
+                    >
+                      <span className="text-base animate-pulse">📱</span>
+                      <span className="font-bold">Abrir Cámara AR</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Explicación / QR para computadores */}
+                <div className="hidden sm:flex items-center justify-between p-3.5 bg-white/70 rounded-2xl border border-[#2C2F34]/15 mb-4 text-xs font-mono text-gray-700">
+                  <div className="space-y-0.5 pr-3">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#E0B605] block">
+                      // En tu celular
+                    </span>
+                    <p className="text-xs font-bold text-[#2C2F34]">
+                      Apunta con la cámara de tu celular para proyectar en el suelo
+                    </p>
+                    <p className="text-gray-500 text-[10px]">
+                      Compatible con iPhone (Quick Look) y Android (Google Scene Viewer) sin apps adicionales.
+                    </p>
+                  </div>
+                  <div className="bg-white p-1.5 rounded-xl border border-black/10 shrink-0 shadow-sm">
+                    <img
+                      src={`https://api.qrserver.com/v1/create-qr-code/?size=110x110&data=${encodeURIComponent(window.location.origin + window.location.pathname + '#realidad-aumentada')}&bgcolor=ffffff&color=2C2F34&margin=1`}
+                      alt="Código QR AR AG Muebles"
+                      className="w-20 h-20"
+                    />
+                  </div>
+                </div>
+
+                {/* ACCIONES OBLIGATORIAS: COTIZAR Y WHATSAPP */}
+                <div className="pt-3 border-t border-[#2C2F34]/15 flex flex-col sm:flex-row items-center gap-3">
+                  <button
+                    onClick={() => {
+                      setSelectedProduct(arProduct);
+                      setIsInquiryOpen(true);
+                    }}
+                    className="w-full sm:flex-1 bg-[#2C2F34] hover:bg-black text-[#F0D030] font-mono text-xs uppercase tracking-wider py-3.5 px-5 rounded-full font-bold shadow-md transition-all text-center flex items-center justify-center gap-2 hover:scale-[1.02]"
+                  >
+                    <span>Cotizar este Mueble</span>
+                    <span>&rarr;</span>
+                  </button>
+
+                  <a
+                    href={`https://wa.me/573183766891?text=${encodeURIComponent(
+                      `Hola AG Muebles, estoy viendo el artículo "${arProduct.name}" (Ref: ${arProduct.code}) en Realidad Aumentada y deseo cotizarlo.`
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full sm:flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-mono text-xs uppercase tracking-wider py-3.5 px-5 rounded-full font-bold shadow-md transition-all text-center flex items-center justify-center gap-2 hover:scale-[1.02]"
+                  >
+                    <span>WhatsApp Directo</span>
+                  </a>
                 </div>
               </div>
             </div>
