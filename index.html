@@ -173,6 +173,14 @@
       animation: slideLeft 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
+    @keyframes slideRight {
+      from { transform: translateX(-100%); }
+      to { transform: translateX(0); }
+    }
+    .animate-slideRight {
+      animation: slideRight 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
     @keyframes fadeIn {
       from { opacity: 0; }
       to { opacity: 1; }
@@ -196,7 +204,6 @@
 
     // --- CATÁLOGO DE SISTEMAS ARQUITECTÓNICOS (100% EN ESPAÑOL) ---
     const categories = [
-      { id: 'todos', name: 'Todos los Espacios', count: 15 },
       { id: 'cocina', name: 'Cocina', count: 3 },
       { id: 'baños', name: 'Baños', count: 3 },
       { id: 'sala', name: 'Sala', count: 3 },
@@ -572,9 +579,8 @@
     ];
 
     function App() {
-      // Estado de navegación y vistas
-      const [viewMode, setViewMode] = useState('gallery'); // 'gallery' | 'index'
-      const [selectedCategory, setSelectedCategory] = useState('todos'); // 'todos' | 'cocina' | 'baños' | 'sala' | 'comedores' | 'varios'
+      // Estado de navegación y catálogo por secciones
+      const [selectedCategory, setSelectedCategory] = useState('cocina'); // 'cocina' | 'baños' | 'sala' | 'comedores' | 'varios'
       const [isNavOpen, setIsNavOpen] = useState(false);
       const [selectedProduct, setSelectedProduct] = useState(null);
       const [isInquiryOpen, setIsInquiryOpen] = useState(false);
@@ -675,7 +681,7 @@
 
         document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
         return () => observer.disconnect();
-      }, [isPageExpanded, viewMode]);
+      }, [isPageExpanded, selectedCategory]);
 
       const navItems = [
         { num: '01', title: 'Cocinas', target: 'cat-cocina', img: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1400&q=85' },
@@ -694,9 +700,6 @@
           if (id.startsWith('cat-')) {
             const cat = id.replace('cat-', '');
             setSelectedCategory(cat);
-            document.getElementById('sistemas')?.scrollIntoView({ behavior: 'smooth' });
-          } else if (id === 'index-view') {
-            setViewMode('index');
             document.getElementById('sistemas')?.scrollIntoView({ behavior: 'smooth' });
           } else if (id === 'inquiry') {
             setIsInquiryOpen(true);
@@ -802,39 +805,7 @@
                   <span>3D / AR</span>
                 </button>
 
-                <button
-                  onClick={playEntrance}
-                  className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#2C2F34]/25 hover:border-[#2C2F34] text-[10px] font-mono uppercase tracking-wider text-[#2C2F34] transition-all bg-white/40 hover:bg-white"
-                  title="Volver a reproducir la animación de inicio con logo y expansión"
-                >
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#E0B605] animate-ping"></span>
-                  <span>Animación Inicial</span>
-                </button>
 
-                <div className="hidden md:flex items-center border border-[#2C2F34]/25 rounded-full p-1 text-[11px] font-mono uppercase tracking-wider bg-white/40">
-                  <button
-                    onClick={() => {
-                      setViewMode('gallery');
-                      document.getElementById('sistemas')?.scrollIntoView({ behavior: 'smooth' });
-                    }}
-                    className={`px-3 py-1 rounded-full transition-all ${
-                      viewMode === 'gallery' ? 'bg-[#2C2F34] text-white font-bold' : 'text-gray-600 hover:text-black'
-                    }`}
-                  >
-                    Galería
-                  </button>
-                  <button
-                    onClick={() => {
-                      setViewMode('index');
-                      document.getElementById('sistemas')?.scrollIntoView({ behavior: 'smooth' });
-                    }}
-                    className={`px-3 py-1 rounded-full transition-all ${
-                      viewMode === 'index' ? 'bg-[#2C2F34] text-white font-bold' : 'text-gray-600 hover:text-black'
-                    }`}
-                  >
-                    Tabla Técnica
-                  </button>
-                </div>
 
                 <button
                   onClick={() => setIsInquiryOpen(true)}
@@ -961,38 +932,13 @@
           <section id="sistemas" className="py-20 sm:py-28 bg-[#E9E7E2] border-b border-[#2C2F34]/15">
             <div className="container mx-auto px-4 sm:px-8">
               
-              <div className="flex flex-col sm:flex-row sm:items-end justify-between border-b border-[#2C2F34]/15 pb-6 mb-16 gap-4 scroll-reveal">
-                <div>
-                  <span className="text-xs font-mono uppercase tracking-widest text-[#E0B605] block mb-1">
-                    [ 02 // ARCHIVO DE SISTEMAS ]
-                  </span>
-                  <h2 className="text-3xl sm:text-5xl font-bold uppercase tracking-tight text-[#2C2F34]">
-                    Colección de Mobiliario Arquitectónico
-                  </h2>
-                </div>
-
-                {/* Controles de Vista */}
-                <div className="flex items-center gap-3">
-                  <span className="text-xs font-mono uppercase text-gray-500 hidden sm:inline">Modo de Vista:</span>
-                  <div className="flex items-center border border-[#2C2F34]/30 rounded-full p-1 text-xs font-mono uppercase bg-white/60">
-                    <button
-                      onClick={() => setViewMode('gallery')}
-                      className={`px-4 py-1.5 rounded-full transition-all ${
-                        viewMode === 'gallery' ? 'bg-[#2C2F34] text-[#F0D030] font-bold shadow-sm' : 'text-gray-600 hover:text-black'
-                      }`}
-                    >
-                      Galería Editorial
-                    </button>
-                    <button
-                      onClick={() => setViewMode('index')}
-                      className={`px-4 py-1.5 rounded-full transition-all ${
-                        viewMode === 'index' ? 'bg-[#2C2F34] text-[#F0D030] font-bold shadow-sm' : 'text-gray-600 hover:text-black'
-                      }`}
-                    >
-                      Tabla Técnica
-                    </button>
-                  </div>
-                </div>
+              <div className="border-b border-[#2C2F34]/15 pb-6 mb-10">
+                <span className="text-xs font-mono uppercase tracking-widest text-[#E0B605] block mb-1 font-bold">
+                  [ 02 // ARCHIVO DE SISTEMAS ]
+                </span>
+                <h2 className="text-3xl sm:text-5xl font-bold uppercase tracking-tight text-[#2C2F34]">
+                  Colección de Mobiliario Arquitectónico
+                </h2>
               </div>
 
               {/* BARRA DE FILTRO POR SECCIONES ARQUITECTÓNICAS */}
@@ -1023,17 +969,15 @@
                 })}
               </div>
 
-              {/* RENDERIZADO SEGÚN VISTA SELECCIONADA */}
-              {viewMode === 'gallery' ? (
-                /* VISTA GALERÍA CON TARJETAS EDITORIALES ANIMADAS EN SCROLL */
-                <div className="space-y-16 sm:space-y-24">
-                  {architecturalProducts
-                    .filter(item => selectedCategory === 'todos' ? true : item.category === selectedCategory)
-                    .map((item, index) => {
-                    const isReversed = index % 2 === 1;
+              {/* RENDERIZADO DE PRODUCTOS POR SECCIÓN */}
+              <div className="space-y-16 sm:space-y-24">
+                {architecturalProducts
+                  .filter(item => item.category === selectedCategory)
+                  .map((item, index) => {
+                  const isReversed = index % 2 === 1;
 
-                    return (
-                      <article key={item.code} className="border-b border-[#2C2F34]/15 pb-16 sm:pb-24 scroll-reveal">
+                  return (
+                    <article key={item.code} className="border-b border-[#2C2F34]/15 pb-16 sm:pb-24 animate-fadeIn">
                         <div className="flex items-center justify-between text-xs font-mono uppercase tracking-widest text-gray-500 mb-6">
                           <span className="text-[#2C2F34] font-bold">[ {item.refNumber} ]</span>
                           <span>{item.typology}</span>
@@ -1100,19 +1044,28 @@
                               </div>
                             </div>
 
-                            <div className="flex items-center gap-4 pt-2">
+                            <div className="flex flex-wrap sm:flex-nowrap items-center gap-3 pt-2">
                               <button
                                 onClick={() => setSelectedProduct(item)}
-                                className="flex-1 bg-[#2C2F34] hover:bg-black text-[#E9E7E2] hover:text-[#F0D030] text-xs font-mono uppercase tracking-widest py-3 px-5 rounded-full transition-all text-center hover:scale-105"
+                                className="flex-1 bg-[#2C2F34] hover:bg-black text-[#E9E7E2] hover:text-[#F0D030] text-xs font-mono uppercase tracking-widest py-3.5 px-4 rounded-full transition-all text-center font-bold"
                               >
-                                Ver Ficha Técnica Completa &rarr;
+                                Ver Ficha Técnica &rarr;
+                              </button>
+                              <button
+                                onClick={() => {
+                                  setSelectedProduct(item);
+                                  setIsInquiryOpen(true);
+                                }}
+                                className="bg-[#F0D030] hover:bg-[#E0B605] text-[#2C2F34] text-xs font-mono uppercase tracking-widest py-3.5 px-5 rounded-full transition-all text-center font-bold shadow-sm flex items-center justify-center gap-1.5 cursor-pointer touch-manipulation"
+                              >
+                                <span>Cotizar</span>
                               </button>
                               <a
-                                href={`https://wa.me/573183766891?text=${encodeURIComponent(`Hola AG Muebles, deseo consultar el sistema arquitectónico "${item.name}" (Ref: ${item.code}).`)}`}
+                                href={`https://wa.me/573183766891?text=${encodeURIComponent(`Hola AG Muebles, deseo cotizar el mueble "${item.name}" (Ref: ${item.code}).`)}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="w-11 h-11 rounded-full border border-[#2C2F34] hover:bg-[#F0D030] hover:border-[#F0D030] text-[#2C2F34] flex items-center justify-center transition-colors"
-                                title="WhatsApp"
+                                className="w-11 h-11 rounded-full border border-[#2C2F34] hover:bg-[#2C2F34] hover:text-[#F0D030] text-[#2C2F34] flex items-center justify-center transition-colors flex-shrink-0"
+                                title="Cotizar por WhatsApp"
                               >
                                 <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
                                   <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.634.055-1.579-.333-.945-.389-1.536-.931-1.637-1.07-.101-.138-.809-1.077-.809-2.054 0-.978.508-1.459.689-1.659.182-.2.397-.249.53-.249.133 0 .265.003.382.008.123.006.287-.046.45.344.167.399.57 1.39.621 1.493.05.103.084.224.016.358-.069.135-.104.218-.206.338-.103.12-.216.269-.309.362-.103.103-.211.215-.091.421.12.206.533.879 1.144 1.423.787.7 1.448.916 1.654 1.019.206.103.327.086.447-.052.12-.137.515-.6.653-.806.137-.206.275-.172.463-.103.189.069 1.196.564 1.402.667.206.103.344.155.395.241.052.086.052.5-.092.905z"/>
@@ -1125,56 +1078,6 @@
                     );
                   })}
                 </div>
-              ) : (
-                /* VISTA TABLA TÉCNICA INDUSTRIAL */
-                <div className="overflow-x-auto bg-white/80 rounded-2xl border border-[#2C2F34]/15 p-4 sm:p-6 shadow-sm scroll-reveal">
-                  <table className="w-full text-left border-collapse text-xs font-mono">
-                    <thead>
-                      <tr className="border-b-2 border-[#2C2F34] text-gray-500 uppercase tracking-widest text-[11px]">
-                        <th className="py-4 px-3">Código</th>
-                        <th className="py-4 px-4">Sistema / Modelo</th>
-                        <th className="py-4 px-4 hidden md:table-cell">Tipología</th>
-                        <th className="py-4 px-4 hidden lg:table-cell">Materiales Principales</th>
-                        <th className="py-4 px-3 text-right">Detalle</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-[#2C2F34]/15">
-                      {architecturalProducts
-                    .filter(item => selectedCategory === 'todos' ? true : item.category === selectedCategory)
-                    .map((item) => (
-                        <tr 
-                          key={item.code}
-                          onClick={() => setSelectedProduct(item)}
-                          className="hover:bg-[#2C2F34] hover:text-[#E9E7E2] transition-colors cursor-pointer group"
-                        >
-                          <td className="py-5 px-3 font-bold text-[#2C2F34] group-hover:text-[#F0D030]">
-                            {item.code}
-                          </td>
-                          <td className="py-5 px-4">
-                            <span className="font-bold text-sm tracking-tight uppercase block group-hover:text-white">
-                              {item.name}
-                            </span>
-                            <span className="text-[10px] text-gray-500 group-hover:text-gray-300 md:hidden block">
-                              {item.typology}
-                            </span>
-                          </td>
-                          <td className="py-5 px-4 hidden md:table-cell text-gray-600 group-hover:text-gray-300 uppercase">
-                            {item.typology}
-                          </td>
-                          <td className="py-5 px-4 hidden lg:table-cell text-gray-500 group-hover:text-gray-300 truncate max-w-xs">
-                            {item.materials.join(' &bull; ')}
-                          </td>
-                          <td className="py-5 px-3 text-right">
-                            <span className="inline-flex items-center gap-1.5 underline decoration-[#F0D030] group-hover:text-[#F0D030] font-bold">
-                              Ver Ficha &rarr;
-                            </span>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
 
             </div>
           </section>
@@ -1706,78 +1609,78 @@
         </div>
 
           {/* ==========================================================================
-              3. NAVEGADOR A PANTALLA COMPLETA CON PREVIEW HOVER (FULL-SCREEN OVERLAY)
+              3. NAVEGADOR LATERAL A MEDIA PANTALLA (HALF-PAGE DRAWER EN TONO #E9E7E2)
              ========================================================================== */}
           {isNavOpen && (
-            <div className="fixed inset-0 z-[100] bg-[#2C2F34] text-[#E9E7E2] flex flex-col justify-between p-6 sm:p-12 overflow-y-auto animate-fadeIn touch-manipulation">
-              <div className="flex items-center justify-between border-b border-white/10 pb-6">
-                <div className="flex items-center gap-3">
-                  <img src="assets/logo-dark.png" alt="AG MUEBLES" className="h-8 sm:h-10 w-auto" />
-                  <span className="text-xs font-mono uppercase tracking-widest text-gray-400 hidden sm:inline">
-                    // Navegación Arquitectónica
-                  </span>
-                </div>
-                <button
-                  onClick={() => setIsNavOpen(false)}
-                  className="group flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-[#E9E7E2] hover:text-[#F0D030] p-2 rounded-lg cursor-pointer touch-manipulation"
-                  aria-label="Cerrar Menú"
-                >
-                  <span className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-lg group-hover:border-[#F0D030] bg-white/5">
+            <div 
+              className="fixed inset-0 z-[100] bg-black/40 backdrop-blur-sm flex justify-start animate-fadeIn"
+              onClick={() => setIsNavOpen(false)}
+            >
+              <div 
+                className="relative bg-[#E9E7E2] text-[#2C2F34] w-full sm:w-3/4 md:w-1/2 lg:w-5/12 max-w-xl h-full shadow-2xl flex flex-col justify-between p-6 sm:p-10 overflow-y-auto border-r border-[#2C2F34]/20 animate-slideRight cursor-default touch-manipulation"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Cabecera del Menú */}
+                <div className="flex items-center justify-between border-b border-[#2C2F34]/15 pb-5">
+                  <div className="flex items-center gap-3">
+                    <img src="assets/marca-grafica-principal.png" alt="AG MUEBLES" className="h-8 sm:h-9 w-auto object-contain" />
+                    <span className="text-[11px] font-mono uppercase tracking-widest text-gray-500 hidden sm:inline">
+                      // Menú
+                    </span>
+                  </div>
+                  <button
+                    onClick={() => setIsNavOpen(false)}
+                    className="w-9 h-9 rounded-full border border-[#2C2F34]/30 flex items-center justify-center hover:bg-[#2C2F34] hover:text-white transition-colors text-lg"
+                    aria-label="Cerrar Menú"
+                  >
                     &times;
-                  </span>
-                  <span>Cerrar</span>
-                </button>
-              </div>
+                  </button>
+                </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 my-auto py-8 sm:py-10 items-center">
-                <div className="lg:col-span-7 space-y-3 sm:space-y-6">
+                {/* Lista de Secciones de Navegación */}
+                <div className="my-auto py-6 space-y-2 sm:space-y-3">
+                  <div className="text-[10px] font-mono uppercase tracking-widest text-[#E0B605] font-bold mb-3">
+                    [ SECCIONES ARQUITECTÓNICAS ]
+                  </div>
                   {navItems.map(item => (
                     <div
                       key={item.num}
-                      onMouseEnter={() => setNavHoverImage(item.img)}
                       onClick={() => scrollTo(item.target)}
-                      className="group cursor-pointer flex items-baseline gap-4 sm:gap-6 border-b border-white/5 pb-3 transition-colors active:opacity-70 touch-manipulation py-1"
+                      className="group cursor-pointer flex items-baseline justify-between gap-4 border-b border-[#2C2F34]/10 pb-2.5 transition-all active:opacity-70 py-1"
                     >
-                      <span className="text-xs sm:text-sm font-mono text-[#F0D030] tracking-wider">
-                        {item.num}
-                      </span>
-                      <div className="flex-1">
-                        <h3 className="text-2xl sm:text-5xl lg:text-6xl font-light tracking-tight uppercase group-hover:text-[#F0D030] group-hover:translate-x-2 transition-all">
+                      <div className="flex items-baseline gap-3.5">
+                        <span className="text-xs font-mono text-[#E0B605] font-bold tracking-wider">
+                          {item.num}
+                        </span>
+                        <h3 className="text-xl sm:text-2xl lg:text-3xl font-light tracking-tight uppercase group-hover:text-[#E0B605] group-hover:translate-x-1.5 transition-all">
                           {item.title}
                         </h3>
                       </div>
-                      <span className="text-xl text-gray-500 group-hover:text-[#F0D030] transition-colors">
+                      <span className="text-sm font-mono text-gray-400 group-hover:text-[#2C2F34] transition-colors">
                         &rarr;
                       </span>
                     </div>
                   ))}
                 </div>
 
-                <div className="hidden lg:block lg:col-span-5 pl-8">
-                  <div className="aspect-[4/5] rounded-2xl overflow-hidden bg-black/40 border border-white/10 relative shadow-2xl">
-                    <img 
-                      src={navHoverImage} 
-                      alt="Vista previa" 
-                      className="w-full h-full object-cover transition-all duration-700 filter brightness-90"
-                    />
-                    <div className="absolute bottom-4 left-4 right-4 bg-black/60 backdrop-blur-md p-3 rounded-xl border border-white/10 text-xs font-mono">
-                      <span className="text-[#F0D030] block">TALLER AG &bull; ARCHIVO</span>
-                      <span className="text-gray-300">Bogotá &bull; Fabricación 100% a Medida</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                {/* Pie del Menú con CTA de Cotizar */}
+                <div className="border-t border-[#2C2F34]/15 pt-5 space-y-4">
+                  <button
+                    onClick={() => { setIsNavOpen(false); setIsInquiryOpen(true); }}
+                    className="w-full bg-[#2C2F34] hover:bg-black text-[#F0D030] font-mono text-xs uppercase tracking-wider py-3.5 px-4 rounded-full flex items-center justify-center gap-2 transition-all shadow-md font-bold hover:scale-[1.02]"
+                  >
+                    <span>Cotizar Proyecto o Medidas</span>
+                    <span>&rarr;</span>
+                  </button>
 
-              <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs font-mono text-gray-400 gap-4">
-                <span>16 AÑOS DE EXPERIENCIA &bull; SISTEMAS ARQUITECTÓNICOS AROLDO GUERRERO</span>
-                <div className="flex items-center gap-6">
-                  <a href="https://www.instagram.com/agmueblescol/" target="_blank" className="hover:text-[#F0D030]">
-                    Instagram: @agmueblescol
-                  </a>
-                  <span>|</span>
-                  <a href="tel:+573183766891" className="hover:text-[#F0D030]">
-                    +57 318 376 6891
-                  </a>
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between text-[11px] font-mono text-gray-500 gap-2">
+                    <a href="https://www.instagram.com/agmueblescol/" target="_blank" rel="noopener noreferrer" className="hover:text-[#2C2F34]">
+                      IG: @agmueblescol
+                    </a>
+                    <a href="tel:+573183766891" className="hover:text-[#2C2F34] font-bold">
+                      +57 318 376 6891
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1797,7 +1700,7 @@
                 className="relative bg-[#E9E7E2] text-[#2C2F34] w-full max-w-2xl h-full shadow-2xl flex flex-col justify-between overflow-y-auto border-l border-[#2C2F34]/20 animate-slideLeft cursor-default"
                 onClick={(e) => e.stopPropagation()}
               >
-                <div className="sticky top-0 z-20 bg-[#E9E7E2]/95 backdrop-blur-md p-6 border-b border-[#2C2F34]/15 flex items-center justify-between">
+                <div className="sticky top-0 z-20 bg-[#E9E7E2]/95 backdrop-blur-md p-5 sm:p-6 border-b border-[#2C2F34]/15 flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <span className="text-xs font-mono bg-[#2C2F34] text-[#F0D030] px-2.5 py-0.5 rounded-sm font-bold">
                       {selectedProduct.code}
@@ -1806,13 +1709,23 @@
                       Especificación Técnica
                     </span>
                   </div>
-                  <button
-                    onClick={() => setSelectedProduct(null)}
-                    className="w-9 h-9 rounded-full border border-[#2C2F34]/30 flex items-center justify-center hover:bg-[#2C2F34] hover:text-white transition-colors text-lg"
-                    title="Cerrar (Esc)"
-                  >
-                    &times;
-                  </button>
+                  <div className="flex items-center gap-2.5">
+                    <button
+                      onClick={() => setIsInquiryOpen(true)}
+                      className="bg-[#2C2F34] hover:bg-black text-[#F0D030] text-xs font-mono uppercase tracking-wider px-3.5 py-1.5 rounded-full font-bold transition-all shadow-sm flex items-center gap-1.5 hover:scale-105"
+                      title="Solicitar cotización de este mueble"
+                    >
+                      <span>Cotizar</span>
+                      <span>&rarr;</span>
+                    </button>
+                    <button
+                      onClick={() => setSelectedProduct(null)}
+                      className="w-8 h-8 rounded-full border border-[#2C2F34]/30 flex items-center justify-center hover:bg-[#2C2F34] hover:text-white transition-colors text-lg"
+                      title="Cerrar (Esc)"
+                    >
+                      &times;
+                    </button>
+                  </div>
                 </div>
 
                 <div className="p-6 sm:p-8 space-y-8 flex-1">
@@ -1826,6 +1739,40 @@
                     <p className="text-xs font-mono text-gray-500 mt-1">
                       Diseño & Dirección: {selectedProduct.designer}
                     </p>
+                  </div>
+
+                  {/* Banner de Cotización Inmediata para este Producto */}
+                  <div className="bg-white/90 border-2 border-[#2C2F34] rounded-2xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">
+                    <div>
+                      <span className="text-[11px] font-mono text-[#E0B605] font-bold uppercase tracking-wider block">
+                        // Cotización a tu Espacio
+                      </span>
+                      <h4 className="text-sm sm:text-base font-bold text-[#2C2F34] uppercase tracking-tight">
+                        Fabricación 100% Personalizada
+                      </h4>
+                      <p className="text-xs font-mono text-gray-600 mt-0.5">
+                        Toma de medidas en Bogotá y planos 3D sin costo adicional.
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-2 w-full sm:w-auto shrink-0">
+                      <button
+                        onClick={() => setIsInquiryOpen(true)}
+                        className="flex-1 sm:flex-none bg-[#2C2F34] hover:bg-black text-[#F0D030] font-mono text-xs uppercase tracking-wider px-4 py-2.5 rounded-xl font-bold transition-all text-center shadow-md hover:scale-105"
+                      >
+                        Cotizar Mueble
+                      </button>
+                      <a
+                        href={`https://wa.me/573183766891?text=${encodeURIComponent(
+                          `Hola AG Muebles, deseo cotizar el sistema "${selectedProduct.name}" (Ref: ${selectedProduct.code}).`
+                        )}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="bg-emerald-600 hover:bg-emerald-700 text-white font-mono text-xs uppercase tracking-wider px-3 py-2.5 rounded-xl transition-all flex items-center justify-center gap-1 font-bold shadow-md"
+                        title="Cotizar directamente por WhatsApp"
+                      >
+                        <span>WhatsApp</span>
+                      </a>
+                    </div>
                   </div>
 
                   {/* Fotografías arquitectónicas con zoom a pantalla completa */}
@@ -1898,17 +1845,22 @@
                   </div>
                 </div>
 
-                <div className="sticky bottom-0 bg-[#E9E7E2] p-6 border-t border-[#2C2F34]/15">
+                <div className="sticky bottom-0 bg-[#E9E7E2]/95 backdrop-blur-md p-4 sm:p-6 border-t border-[#2C2F34]/15 flex flex-col sm:flex-row gap-3">
+                  <button
+                    onClick={() => setIsInquiryOpen(true)}
+                    className="flex-1 bg-[#2C2F34] hover:bg-black text-[#F0D030] text-xs font-mono uppercase tracking-widest py-3.5 px-5 rounded-full text-center transition-all shadow-md font-bold hover:scale-[1.02]"
+                  >
+                    Cotizar este Mueble / Proyecto &rarr;
+                  </button>
                   <a
                     href={`https://wa.me/573183766891?text=${encodeURIComponent(
                       `Hola AG Muebles, deseo solicitar cotización técnica formal para el sistema "${selectedProduct.name}" (Ref: ${selectedProduct.code}).`
                     )}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full bg-[#2C2F34] hover:bg-black text-[#F0D030] text-xs font-mono uppercase tracking-widest py-4 px-6 rounded-full text-center transition-all shadow-md flex items-center justify-center gap-2 hover:scale-[1.02]"
+                    className="bg-white hover:bg-emerald-50 text-emerald-700 border border-emerald-600/40 text-xs font-mono uppercase tracking-wider py-3.5 px-5 rounded-full text-center transition-all font-bold flex items-center justify-center gap-2"
                   >
-                    <span>Consultar con un Arquitecto AG por WhatsApp</span>
-                    <span>&rarr;</span>
+                    <span>WhatsApp Directo</span>
                   </a>
                 </div>
               </div>
