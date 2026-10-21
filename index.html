@@ -1071,7 +1071,7 @@
                                 <span>Cotizar</span>
                               </button>
                               <a
-                                href={`https://wa.me/573183766891?text=${encodeURIComponent(`Hola AG Muebles, deseo cotizar el mueble "${item.name}" (Ref: ${item.code}).`)}`}
+                                href={`https://wa.me/573183766891?text=${encodeURIComponent(`Hola AG Muebles, estoy viendo el artículo '${item.name}' (Ref: ${item.code}) en la página y deseo cotizarlo.`)}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="w-11 h-11 rounded-full border border-[#2C2F34] hover:bg-[#2C2F34] hover:text-[#F0D030] text-[#2C2F34] flex items-center justify-center transition-colors flex-shrink-0"
@@ -1247,7 +1247,7 @@
                       </button>
 
                       <a
-                        href={`https://wa.me/573183766891?text=${encodeURIComponent('Hola AG Muebles, vi la pieza en Realidad Aumentada (3D-01 Silla Escultórica) y deseo cotizarla a medida.')}`}
+                        href={`https://wa.me/573183766891?text=${encodeURIComponent("Hola AG Muebles, estoy viendo el artículo 'Silla Escultórica de Autor' (Ref: 3D-01) en la página y deseo cotizarlo.")}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="w-full border border-[#2C2F34] hover:bg-[#2C2F34] hover:text-white text-[#2C2F34] text-xs font-mono uppercase tracking-widest py-3 px-6 rounded-xl flex items-center justify-center gap-2 transition-all"
@@ -1786,7 +1786,7 @@
                       </button>
                       <a
                         href={`https://wa.me/573183766891?text=${encodeURIComponent(
-                          `Hola AG Muebles, deseo cotizar el sistema "${selectedProduct.name}" (Ref: ${selectedProduct.code}).`
+                          `Hola AG Muebles, estoy viendo el artículo '${selectedProduct.name}' (Ref: ${selectedProduct.code}) en la página y deseo cotizarlo.`
                         )}`}
                         target="_blank"
                         rel="noopener noreferrer"
@@ -1877,7 +1877,7 @@
                   </button>
                   <a
                     href={`https://wa.me/573183766891?text=${encodeURIComponent(
-                      `Hola AG Muebles, deseo solicitar cotización técnica formal para el sistema "${selectedProduct.name}" (Ref: ${selectedProduct.code}).`
+                      `Hola AG Muebles, estoy viendo el artículo '${selectedProduct.name}' (Ref: ${selectedProduct.code}) en la página y deseo cotizarlo.`
                     )}`}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -1929,11 +1929,10 @@
                     e.preventDefault();
                     const name = e.target.clientName.value;
                     const phone = e.target.clientPhone.value;
-                    const project = e.target.projectType.value;
-                    const itemRef = selectedProduct ? `\n- Referencia: ${selectedProduct.name} (${selectedProduct.code})` : '';
-                    const url = `https://wa.me/573183766891?text=${encodeURIComponent(
-                      `Hola AG Muebles, deseo solicitar asesoría para cotizar:\n- Nombre: ${name}\n- Teléfono: ${phone}\n- Espacio: ${project}${itemRef}`
-                    )}`;
+                    const message = selectedProduct 
+                      ? `Hola AG Muebles, estoy viendo el artículo '${selectedProduct.name}' (Ref: ${selectedProduct.code}) en la página y deseo cotizarlo.\n- Nombre: ${name}\n- Teléfono: ${phone}\n- Espacio: ${project}`
+                      : `Hola AG Muebles, deseo solicitar asesoría para cotizar un proyecto arquitectónico:\n- Nombre: ${name}\n- Teléfono: ${phone}\n- Tipo de Proyecto: ${project}`;
+                    const url = `https://wa.me/573183766891?text=${encodeURIComponent(message)}`;
                     window.open(url, '_blank');
                     setIsInquiryOpen(false);
                   }}
@@ -2425,7 +2424,7 @@
 
                   <a
                     href={`https://wa.me/573183766891?text=${encodeURIComponent(
-                      `Hola AG Muebles, estoy viendo el artículo "${arProduct.name}" (Ref: ${arProduct.code}) en Realidad Aumentada y deseo cotizarlo.`
+                      `Hola AG Muebles, estoy viendo el artículo '${arProduct.name}' (Ref: ${arProduct.code}) en la página y deseo cotizarlo.`
                     )}`}
                     target="_blank"
                     rel="noopener noreferrer"
