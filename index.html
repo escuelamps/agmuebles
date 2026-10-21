@@ -593,11 +593,7 @@
       const [isQrModalOpen, setIsQrModalOpen] = useState(false);
       const [arProduct, setArProduct] = useState(null); // Producto visualizándose en Realidad Aumentada
       const [active3dFinish, setActive3dFinish] = useState('natural'); // 'natural' | 'nogal' | 'carbon'
-      const [selected3dSource, setSelected3dSource] = useState('stock'); // 'stock' | 'taller'
-
-      const stockModelUrl = 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/SheenChair/glTF-Binary/SheenChair.glb';
-      const tallerModelUrl = 'assets/models/silla-autor.glb';
-      const active3dModelUrl = selected3dSource === 'stock' ? stockModelUrl : tallerModelUrl;
+      const active3dModelUrl = 'assets/models/silla-autor.glb';
 
       const handleLaunchAR = () => {
         const viewer = document.getElementById('ag-model-viewer');
@@ -1135,17 +1131,17 @@
                       </span>
                     </div>
 
-                    {/* Tarjeta de Referencia Fotográfica de Stock para pruebas de escala */}
+                    {/* Tarjeta de Especificación de Taller */}
                     <div className="flex items-center gap-3.5 p-3.5 bg-white/85 rounded-2xl border border-[#2C2F34]/15 shadow-sm">
                       <img 
                         src="https://images.unsplash.com/photo-1592078615290-033ee584e267?auto=format&fit=crop&w=300&q=80" 
-                        alt="Foto Stock Silla de Autor" 
+                        alt="Silla de Autor AG Muebles" 
                         className="w-16 h-16 object-cover rounded-xl border border-[#2C2F34]/20 shadow-sm flex-shrink-0"
                       />
                       <div className="text-xs font-mono">
-                        <span className="text-[10px] uppercase text-[#E0B605] font-bold block">// Imagen de Stock Verificada</span>
+                        <span className="text-[10px] uppercase text-[#E0B605] font-bold block">// Fabricación AG Muebles</span>
                         <strong className="text-[#2C2F34] text-sm block font-bold">Silla Escultórica en Roble</strong>
-                        <span className="text-[10px] text-gray-500 block">Referencia visual de alta fidelidad para prueba AR</span>
+                        <span className="text-[10px] text-gray-500 block">Ebanistería fina & tapizado belga a medida</span>
                       </div>
                     </div>
 
@@ -1165,35 +1161,6 @@
                       <div className="flex justify-between py-1 border-b border-[#2C2F34]/5">
                         <span className="text-gray-500">Tecnología AR:</span>
                         <strong className="text-[#2C2F34]">Apple Quick Look & Scene Viewer</strong>
-                      </div>
-                    </div>
-
-                    {/* Selector de Modelo para Pruebas (Stock vs Taller) */}
-                    <div className="pt-1">
-                      <label className="text-[11px] font-mono uppercase tracking-wider text-gray-500 block mb-2">
-                        Fuente de Modelo 3D:
-                      </label>
-                      <div className="grid grid-cols-2 gap-2">
-                        <button
-                          onClick={() => setSelected3dSource('stock')}
-                          className={`px-3 py-2.5 rounded-lg text-xs font-mono uppercase tracking-wider text-center border transition-all ${
-                            selected3dSource === 'stock'
-                              ? 'bg-[#2C2F34] text-[#F0D030] border-[#2C2F34] font-bold shadow-sm'
-                              : 'bg-white/80 border-[#2C2F34]/20 text-[#2C2F34] hover:border-[#2C2F34]'
-                          }`}
-                        >
-                          ✓ Modelo Stock AR
-                        </button>
-                        <button
-                          onClick={() => setSelected3dSource('taller')}
-                          className={`px-3 py-2.5 rounded-lg text-xs font-mono uppercase tracking-wider text-center border transition-all ${
-                            selected3dSource === 'taller'
-                              ? 'bg-[#2C2F34] text-[#F0D030] border-[#2C2F34] font-bold shadow-sm'
-                              : 'bg-white/80 border-[#2C2F34]/20 text-[#2C2F34] hover:border-[#2C2F34]'
-                          }`}
-                        >
-                          Modelo Taller AG
-                        </button>
                       </div>
                     </div>
 
@@ -2344,7 +2311,7 @@
 
                   <model-viewer
                     id="ar-product-modal-viewer"
-                    src={stockModelUrl}
+                    src={active3dModelUrl}
                     poster={arProduct.primaryImage}
                     loading="eager"
                     reveal="auto"
